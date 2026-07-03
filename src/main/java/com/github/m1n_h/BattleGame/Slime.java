@@ -1,9 +1,15 @@
 package com.github.m1n_h.BattleGame;
 
 public class Slime {
-    String name = "슬라임";
-    int hp = 60;
+    String name;
+    int hp = 40;
     int attackPower = 10;
+    int id;
+
+    public Slime(int id) {
+        this.id = id;
+        this.name = "슬라임(" + id + ")";
+    }
 
     public void attack(Hero target) {
         System.out.println("💧 " + name + "(이)가 몸통 박치기로 " + target.name + "을(를) 공격합니다!");
