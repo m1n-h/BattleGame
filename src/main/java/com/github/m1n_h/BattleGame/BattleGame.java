@@ -10,17 +10,17 @@ public class BattleGame {
 
         Slime[] slime = new Slime[5];
         for (int i = 0; i < slime.length; i++) {
-            slime[i] = new Slime(i+1);
+            slime[i] = new Slime(i+1, (i+1)*10, (i+1)*5);
         }
 
         System.out.println("\uD83C\uDFB5 몬스터 무리가 나타났습니다! 배틀 시작! \uD83C\uDFB5\\n");
 
         for (int i = 0; i < slime.length; i++) {
-            while (hero.hp > 0 && slime[i].hp > 0) {
+            while (hero.hp > 0 && slime[i].getHp() > 0) {
                 hero.attack(slime[i]);
                 System.out.println();
 
-                if (slime[i].hp <= 0) {
+                if (slime[i].getHp() <= 0) {
                     System.out.println("🎉 " + slime[i].name + "이(가) 쓰러졌습니다!\nYou Win");
                     break;
                 }

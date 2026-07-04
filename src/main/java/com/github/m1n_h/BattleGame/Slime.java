@@ -2,18 +2,28 @@ package com.github.m1n_h.BattleGame;
 
 public class Slime {
     String name;
-    int hp = 40;
-    int attackPower = 10;
+    private int hp;
+    private int attackPower;
     int id;
 
-    public Slime(int id) {
+    public Slime(int id, int maxHp, int attackPower) {
         this.id = id;
         this.name = "슬라임(" + id + ")";
+        this.hp = maxHp;
+        this.attackPower = attackPower;
     }
 
     public void attack(Hero target) {
         System.out.println("💧 " + name + "(이)가 몸통 박치기로 " + target.name + "을(를) 공격합니다!");
-        target.takeDamage(attackPower);
+        target.takeDamage(getAttackPower());
+    }
+
+    public int getHp() {
+        return this.hp;
+    }
+
+    public int getAttackPower() {
+        return this.attackPower;
     }
 
     public void takeDamage(int damage) {
