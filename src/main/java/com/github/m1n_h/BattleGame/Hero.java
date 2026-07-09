@@ -3,8 +3,12 @@ package com.github.m1n_h.BattleGame;
 public class Hero extends Character {
     private int mp;
     private int level;
+    private Skill[] skill;
 
     Weapon weapon;
+
+    public Skill[] getSkill() { return this.skill; }
+    public void setSkill(Skill[] skill) { this.skill = skill;}
 
     public int getMp() { return this.mp; }
     public void setMp(int mp) { this.mp = mp; }
