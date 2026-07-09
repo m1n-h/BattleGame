@@ -18,25 +18,22 @@ public class BattleGame {
             monster.add(new Goblin(i));
         }
 
-        System.out.println("GAME START! \uD83C\uDFB5");
-        System.out.println();
-        System.out.println("⚠\uFE0F 슬라임 군단 " + monster.size() + "마리 출몰!!");
-        System.out.println();
-        System.out.println("☄️ 용사 " + hero.getName() + "(이)가 대지진 주문을 외웁니다! 모든 슬라임이 지진의 충격을 받습니다!");
-        System.out.println();
+        System.out.println("GAME START! \uD83C\uDFB5\n");
+        System.out.println("⚠\uFE0F 몬스터 연합군 " + monster.size() + "마리 출몰!!\n");
+        System.out.println("☄️ 전사 " + warrior.getName() + "(이)가 대지진 주문을 외웁니다!\n");
 
         int earthquakeDamage = 30;
 
         for (int i = 0; i < monster.size(); i++) {
-            Slime target = (Slime) monster.get(i);
+            Monster target = monster.get(i);
             target.takeDamage(earthquakeDamage);
 
             if (target.getHp() <= 0) {
-                System.out.println("\uD83D\uDC80 슬라임(" + target.id + ") 은(는) 지진 충격을 이기지 못하고 쓰러졌습니다!\n\n");
+                System.out.println("\uD83D\uDC80 " + target.getName() + " 은(는) 지진 충격을 이기지 못하고 쓰러졌습니다!\n");
             } else {
-                System.out.println("💥 슬라임(" + target.id + ") 에게 " + earthquakeDamage + "의 피해! (남은 HP: " + target.getHp() + ")\n");
+                System.out.println("💥 " + target.getName() + " 에게 " + earthquakeDamage + "의 피해! (남은 HP: " + target.getHp() + ")\n");
 
-                while (hero.getHp() > 0 && target.getHp() > 0) {
+                while (warrior.getHp() > 0 && target.getHp() > 0) {
                     warrior.attack(target);
                     System.out.println();
 
@@ -44,7 +41,7 @@ public class BattleGame {
                         System.out.println("🎉 " + target.getName() + "이(가) 쓰러졌습니다!\n");
 
                         hero.setHp(hero.getHp()+50);
-                        System.out.println("🧪 포션 꿀꺽! 용사 " + hero.getName() + "의 HP가 회복되었습니다. (현재 HP: " + hero.getHp() + ")\n");
+                        System.out.println("🧪 포션 꿀꺽! 전사 " + warrior.getName() + "의 HP가 회복되었습니다. (현재 HP: " + warrior.getHp() + ")\n");
                         break;
                     }
 
@@ -52,7 +49,7 @@ public class BattleGame {
                     System.out.println();
 
                     if (hero.getHp() <= 0) {
-                        System.out.println("💀 " + hero.getName() + "이(가) 쓰러졌습니다...\nYou Lose!\n");
+                        System.out.println("💀 " + warrior.getName() + "이(가) 쓰러졌습니다...\nYou Lose!\n");
                         break;
                     }
                 }
@@ -69,7 +66,7 @@ public class BattleGame {
         System.out.println(bossSlime.getName() + "의 약점 구역을 예측해 타격하세요!");
         System.out.println();
 
-        while (bossSlime.getHp() > 0 && hero.getHp() > 0) {
+        while (bossSlime.getHp() > 0 && warrior.getHp() > 0) {
             System.out.print("공격 구역 입력: ");
             int attackZone =  sc.nextInt();
 
@@ -94,8 +91,8 @@ public class BattleGame {
                 System.out.println();
             }
 
-            if (hero.getHp() <= 0) {
-                System.out.println("💀 콰당... 용사 " + hero.getName() + "(이)가 쓰러졌습니다.\nYou Lose!\n");
+            if (warrior.getHp() <= 0) {
+                System.out.println("💀 콰당... 용사 " + warrior.getName() + "(이)가 쓰러졌습니다.\nYou Lose!\n");
             }
         }
 
