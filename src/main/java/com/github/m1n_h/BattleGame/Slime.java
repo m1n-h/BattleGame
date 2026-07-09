@@ -8,6 +8,11 @@ public class Slime extends Monster {
         setName("슬라임(" + id + ")");
         setHp(10);
         setAttackPower(5);
+        setAttackName(new String[] {
+                "물말랑 몸통 박치기",
+                "끈적한 점액 뿜기",
+                "부르르 떨며 위협하기"
+        });
     }
 
     public void attack(Hero target) {

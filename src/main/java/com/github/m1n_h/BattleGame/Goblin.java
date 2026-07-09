@@ -8,6 +8,11 @@ public class Goblin extends Monster {
         setName("고블린(" + id + ")");
         setHp(30);
         setAttackPower(10);
+        setAttackName(new String[] {
+                "야비한 돌던지기",
+                "독 묻은 단검 투척",
+                "조롱하며 메롱하기"
+        });
     }
 
     public void attack(Hero target) {
