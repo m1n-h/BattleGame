@@ -12,6 +12,7 @@ public class Warrior extends Hero {
                 new Skill("파워 스트라이크 💥", 1.8),
                 new Skill("대지 가르기 🌋", 2.8)
         });
+        this.weapon = new Weapon("엑스칼리버", 25);
     }
 
     public void attack(Monster target) {
