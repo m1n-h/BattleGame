@@ -19,14 +19,9 @@ public class KingSlime extends Monster {
         for (int i = 0; i < weakPoints.length; i++) {
             if (weakPoints[i] == guessZone) {
                 result = "Hit";
-                takeDamage(30);
                 destroyedWeakPoints++;
                 break;
             }
-        }
-
-        if ((destroyedWeakPoints == weakPoints.length) || (getHp() <= 0)) {
-            result = "Kill";
         }
 
         return result;
