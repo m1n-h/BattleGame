@@ -20,6 +20,7 @@ public class Hero extends Character {
         this.weapon = weapon;
         System.out.println("⚔️ " + getName() + "이(가) [" + weapon.name + "]을(를) 장착했습니다! (공격력 +" + weapon.bonusAttack + ")");
     }
+    public Weapon getWeapon() { return this.weapon; }
 
     public void attack(Monster target) {}
 

@@ -8,9 +8,9 @@ public class Warrior extends Hero {
         setMp(100);
         setLevel(1);
         setSkill(new Skill[] {
-                new Skill("휠윈드 소용돌이 🌪️", 1.2),
-                new Skill("파워 스트라이크 💥", 1.8),
-                new Skill("대지 가르기 🌋", 2.8)
+                new Skill("휠윈드 소용돌이 🌪️", 1.5, 25),
+                new Skill("파워 스트라이크 💥", 2.2, 15),
+                new Skill("대지 가르기 🌋", 3.5, 40)
         });
         this.weapon = new Weapon("엑스칼리버", 25);
     }
@@ -21,7 +21,7 @@ public class Warrior extends Hero {
         // 무기 소지시 보너스 데미지
         if (weapon != null) totalAttack += weapon.bonusAttack;
 
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.5 || getMp() < 15) {
             System.out.println("⚔️ " + getName() + " (이)가 " + target.getName() + " 을(를) 공격합니다!");
             target.takeDamage(totalAttack);
         } else {
@@ -30,9 +30,10 @@ public class Warrior extends Hero {
             int randomIdx = (int)(Math.random() * skills.length);
             Skill chosenSkill = skills[randomIdx];
 
+            setMp(getMp() - chosenSkill.getMPCost());
             int skillDamage = (int)(totalAttack * chosenSkill.getDamageMultiplier());
 
-            System.out.println("🔥 [CRITICAL] " + getName() + "이(가) 필살기 [" + chosenSkill.getName() + "] 사용합니다!");
+            System.out.println("🔥 [CRITICAL] " + getName() + "이(가) 필살기 [" + chosenSkill.getName() + "] 사용합니다! (남은 MP: " + getMp() + ")");
             System.out.println("   " + target.getName() + " 에게 " + skillDamage + " 의 치명상을 입혔습니다!");
 
             target.takeDamage(skillDamage);

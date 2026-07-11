@@ -9,9 +9,9 @@ public class Mage extends Hero {
         setLevel(1);
         setAttackPower(15);
         setSkill(new Skill[] {
-                new Skill("체인 라이트닝 ⚡", 1.5),
-                new Skill("블리자드 폭풍 ❄️", 2.2),
-                new Skill("메테오 스트라이크 ☄️", 3.5)
+                new Skill("체인 라이트닝 ⚡", 1.8, 20),
+                new Skill("블리자드 폭풍 ❄️", 2.2, 30),
+                new Skill("메테오 스트라이크 ☄️", 4.8, 50)
         });
         this.weapon = new Weapon("대마법사의 지팡이", 30);
     }
@@ -29,7 +29,7 @@ public class Mage extends Hero {
             int randomIdx = (int) (Math.random() * skills.length);
             Skill chosenSkill = skills[randomIdx];
 
-            setMp(getMp() - 20);
+            setMp(getMp() - chosenSkill.getMPCost());
             int skillDamage = (int) (totalAttack * chosenSkill.getDamageMultiplier());
 
             System.out.println("✨ [MAGIC] " + getName() + "이(가) 필살기 [" + chosenSkill.getName() + "] 사용합니다! (남은 MP: " + getMp() + ")");
