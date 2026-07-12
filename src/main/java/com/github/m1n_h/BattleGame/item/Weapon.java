@@ -1,8 +1,8 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.item;
 
 public class Weapon {
-    String name;
-    int bonusAttack;
+    public String name;
+    public int bonusAttack;
     private int damage;
 
     public Weapon(String name, int bonusAttack) {

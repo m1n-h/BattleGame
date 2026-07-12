@@ -1,4 +1,4 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.item;
 
 public class ShopItem {
     private String itemName;

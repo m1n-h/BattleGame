@@ -1,4 +1,7 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.monster;
+
+import com.github.m1n_h.BattleGame.character.Character;
+import com.github.m1n_h.BattleGame.character.Hero;
 
 public class Monster extends Character {
     private int exp;

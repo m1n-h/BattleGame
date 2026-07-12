@@ -1,4 +1,7 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.character;
+
+import com.github.m1n_h.BattleGame.monster.Monster;
+import com.github.m1n_h.BattleGame.item.Weapon;
 
 public class Warrior extends Hero {
 
@@ -7,19 +10,20 @@ public class Warrior extends Hero {
         setHp(250);
         setMp(100);
         setLevel(1);
+        setAttackPower(25);
         setSkill(new Skill[] {
                 new Skill("휠윈드 소용돌이 🌪️", 1.5, 25),
                 new Skill("파워 스트라이크 💥", 2.2, 15),
                 new Skill("대지 가르기 🌋", 3.5, 40)
         });
-        this.weapon = new Weapon("엑스칼리버", 25);
+        equipWeapon(new Weapon("엑스칼리버", 25));
     }
 
     public void attack(Monster target) {
         int totalAttack = getAttackPower();
 
         // 무기 소지시 보너스 데미지
-        if (weapon != null) totalAttack += weapon.bonusAttack;
+        if (this.weapon != null) totalAttack += this.weapon.bonusAttack;
 
         if (Math.random() < 0.5 || getMp() < 15) {
             System.out.println("⚔️ " + getName() + " (이)가 " + target.getName() + " 을(를) 공격합니다!");

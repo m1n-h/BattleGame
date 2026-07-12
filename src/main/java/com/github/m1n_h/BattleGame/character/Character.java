@@ -1,4 +1,4 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.character;
 
 public class Character {
     private String name;

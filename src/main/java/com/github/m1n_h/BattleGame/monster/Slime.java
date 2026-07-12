@@ -1,4 +1,6 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.monster;
+
+import com.github.m1n_h.BattleGame.character.Hero;
 
 public class Slime extends Monster {
     int id;

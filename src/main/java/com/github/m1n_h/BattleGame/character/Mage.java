@@ -1,4 +1,7 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.character;
+
+import com.github.m1n_h.BattleGame.monster.Monster;
+import com.github.m1n_h.BattleGame.item.Weapon;
 
 public class Mage extends Hero {
 
@@ -13,12 +16,15 @@ public class Mage extends Hero {
                 new Skill("블리자드 폭풍 ❄️", 2.2, 30),
                 new Skill("메테오 스트라이크 ☄️", 4.8, 50)
         });
-        this.weapon = new Weapon("대마법사의 지팡이", 30);
+        equipWeapon(new Weapon("대마법사의 지팡이", 30));
     }
 
     @Override
     public void attack(Monster target) {
         int totalAttack = getAttackPower();
+
+        // 무기 소지시 보너스 데미지
+        if (this.weapon != null) totalAttack += this.weapon.bonusAttack;
 
         if (Math.random() < 0.5 || getMp() < 20) {
             System.out.println("🔮 " + getName() + "이(가) 지팡이로 평타를 툭 칩니다.");

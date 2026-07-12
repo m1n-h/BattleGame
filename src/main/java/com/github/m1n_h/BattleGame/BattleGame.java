@@ -1,5 +1,15 @@
 package com.github.m1n_h.BattleGame;
 
+import com.github.m1n_h.BattleGame.character.Archer;
+import com.github.m1n_h.BattleGame.character.Hero;
+import com.github.m1n_h.BattleGame.character.Mage;
+import com.github.m1n_h.BattleGame.character.Warrior;
+import com.github.m1n_h.BattleGame.item.Shop;
+import com.github.m1n_h.BattleGame.monster.Goblin;
+import com.github.m1n_h.BattleGame.monster.KingSlime;
+import com.github.m1n_h.BattleGame.monster.Monster;
+import com.github.m1n_h.BattleGame.monster.Slime;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 

@@ -1,4 +1,7 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.character;
+
+import com.github.m1n_h.BattleGame.monster.Monster;
+import com.github.m1n_h.BattleGame.item.Weapon;
 
 public class Archer extends Hero {
 
@@ -13,12 +16,15 @@ public class Archer extends Hero {
                 new Skill("관통의 일격 ⚡", 2.2, 20),
                 new Skill("천공의 화살 ☄\uFE0F", 3.5, 50)
         });
-        this.weapon = new Weapon("바람의 활", 20);
+        equipWeapon(new Weapon("바람의 활", 20));
     }
 
     @Override
     public void attack(Monster target) {
         int totalAttack = getAttackPower();
+
+        // 무기 소지시 보너스 데미지
+        if (this.weapon != null) totalAttack += this.weapon.bonusAttack;
 
         if (Math.random() < 0.5 || getMp() < 20) {
             System.out.println("\uD83C\uDFF9 " + getName() + "이(가) " + target.getName() + " 을(를) 향해 활을 쏩니다!");

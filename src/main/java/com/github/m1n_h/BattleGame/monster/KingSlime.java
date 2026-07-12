@@ -1,4 +1,4 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.monster;
 
 public class KingSlime extends Monster {
     private int[] weakPoints;

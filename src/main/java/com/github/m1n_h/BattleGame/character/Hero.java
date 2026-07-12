@@ -1,4 +1,7 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.character;
+
+import com.github.m1n_h.BattleGame.monster.Monster;
+import com.github.m1n_h.BattleGame.item.Weapon;
 
 public abstract class Hero extends Character {
     private int mp;

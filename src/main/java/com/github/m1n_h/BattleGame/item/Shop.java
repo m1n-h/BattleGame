@@ -1,4 +1,6 @@
-package com.github.m1n_h.BattleGame;
+package com.github.m1n_h.BattleGame.item;
+
+import com.github.m1n_h.BattleGame.character.Hero;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -38,13 +40,11 @@ public class Shop {
                     currentGold -= selectedItem.getItemPrice();
                     System.out.println("✨ 구매 성공! 남은 골드: " + currentGold + "G");
 
-                    //테스트 출력
-                    System.out.println("현재 파티원 수: " + hero.size());
                     for (Hero member : hero) {
                         System.out.println(member.getName() + " 의 무기 강화를 시도합니다.");
-                        int beforeDamage = member.getWeapon().getDamage();
-                        member.getWeapon().addDamage(selectedItem.getUpgradeAmount());
-                        int afterDamage = member.getWeapon().getDamage();
+                        int beforeDamage = member.getAttackPower() + member.getWeapon().bonusAttack;
+                        member.getWeapon().bonusAttack += selectedItem.getUpgradeAmount();
+                        int afterDamage = member.getAttackPower() + member.getWeapon().bonusAttack;
 
                         System.out.println("⚔️ " + member.getName() + "의 무기 공격력: "
                                 + beforeDamage + " ➡️ " + afterDamage + " (+" + selectedItem.getUpgradeAmount() + ")");
