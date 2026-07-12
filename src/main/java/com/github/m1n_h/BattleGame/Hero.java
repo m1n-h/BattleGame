@@ -1,6 +1,6 @@
 package com.github.m1n_h.BattleGame;
 
-public class Hero extends Character {
+public abstract class Hero extends Character {
     private int mp;
     private int level;
     private Skill[] skill;
@@ -22,6 +22,6 @@ public class Hero extends Character {
     }
     public Weapon getWeapon() { return this.weapon; }
 
-    public void attack(Monster target) {}
+    public abstract void attack(Monster target);
 
 }
