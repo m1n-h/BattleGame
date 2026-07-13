@@ -1,9 +1,7 @@
 package com.github.m1n_h.BattleGame;
 
-import com.github.m1n_h.BattleGame.character.Archer;
-import com.github.m1n_h.BattleGame.character.Hero;
-import com.github.m1n_h.BattleGame.character.Mage;
-import com.github.m1n_h.BattleGame.character.Warrior;
+import com.github.m1n_h.BattleGame.character.*;
+import com.github.m1n_h.BattleGame.item.Potion;
 import com.github.m1n_h.BattleGame.item.Shop;
 import com.github.m1n_h.BattleGame.monster.Goblin;
 import com.github.m1n_h.BattleGame.monster.KingSlime;
@@ -29,6 +27,10 @@ public class BattleGame {
             monster.add(new Goblin(i));
         }
 
+        Usable[] potion = new Usable[2];
+        potion[0] = new Potion("HP 포션", 70, 0);
+        potion[1] = new Potion("MP 포션", 0, 70);
+
         System.out.println("GAME START! \uD83C\uDFB5\n");
         System.out.println("⚠\uFE0F 몬스터 연합군 " + monster.size() + "마리 출몰!!\n");
 
@@ -48,12 +50,9 @@ public class BattleGame {
                 if (target.getHp() <= 0) {
                     System.out.println("🎉 " + target.getName() + " 이(가) 쓰러졌습니다!\n");
 
-                    Hero lowHpVictim = getLowestHpHero(hero);
-                    Hero lowMpVictim = getLowestMpHero(hero);
-
                     if (victim != null) gold += 20;
 
-                    if (lowHpVictim != null) {
+                    /*if (lowHpVictim != null) {
                         lowHpVictim.setHp(lowHpVictim.getHp() + 50);
                         System.out.println("🧪 포션 꿀꺽! " + lowHpVictim.getName() + " 의 HP가 회복되었습니다. (현재 HP: " + lowHpVictim.getHp() + ")");
                     }
@@ -61,7 +60,8 @@ public class BattleGame {
                     if (lowMpVictim != null) {
                         lowMpVictim.setMp(lowMpVictim.getMp() + 100);
                         System.out.println("🧪 포션 꿀꺽! " + lowMpVictim.getName() + " 의 MP가 회복되었습니다. (현재 MP: " + lowMpVictim.getMp() + ")");
-                    }
+                    }*/
+
                     break;
                 }
 
@@ -79,7 +79,17 @@ public class BattleGame {
             }
         }
 
-        if (isPartyAlive(hero)) gold = Shop.openShop(hero, gold);
+        if (isPartyAlive(hero)) {
+            Hero lowHpVictim = getLowestHpHero(hero);
+            Hero lowMpVictim = getLowestMpHero(hero);
+
+            for (Usable potionItem : potion) {
+                potionItem.use(lowHpVictim);
+                potionItem.use(lowMpVictim);
+            }
+
+            gold = Shop.openShop(hero, gold);
+        }
 
 
         Scanner  sc = new Scanner(System.in);
