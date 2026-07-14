@@ -1,6 +1,10 @@
 package com.github.m1n_h.BattleGame;
 
+import com.github.m1n_h.BattleGame.character.Usable;
+import com.github.m1n_h.BattleGame.item.Throwable;
+
 import com.github.m1n_h.BattleGame.character.*;
+import com.github.m1n_h.BattleGame.item.FireBomb;
 import com.github.m1n_h.BattleGame.item.Potion;
 import com.github.m1n_h.BattleGame.item.Shop;
 import com.github.m1n_h.BattleGame.monster.Goblin;
@@ -30,6 +34,9 @@ public class BattleGame {
         Usable[] potion = new Usable[2];
         potion[0] = new Potion("HP 포션", 70, 0);
         potion[1] = new Potion("MP 포션", 0, 70);
+
+        Usable[] item = new Usable[1];
+        item[0] = new FireBomb();
 
         System.out.println("GAME START! \uD83C\uDFB5\n");
         System.out.println("⚠\uFE0F 몬스터 연합군 " + monster.size() + "마리 출몰!!\n");
@@ -105,6 +112,15 @@ public class BattleGame {
         int kingSlimeMaxHp = kingSlime.getHp();
 
         while (kingSlime.getHp() > 0 && isPartyAlive(hero)) {
+
+            for (int i = 0; i < item.length; i++) {
+                if (item[i] instanceof Throwable) {
+                    ((Throwable) item[i]).throwAt(kingSlime);
+                    item[i] = null;
+                    break;
+                }
+            }
+
             System.out.print("공격 구역 입력: ");
             int attackZone =  sc.nextInt();
 
