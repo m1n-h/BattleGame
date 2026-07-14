@@ -5,8 +5,8 @@ public class KingSlime extends Monster {
     private int destroyedWeakPoints = 0;
 
     public KingSlime(int[] wp) {
-        setName("킹 슬라임");
-        setHp(300);
+        setName("킹슬라임");
+        setHp(800);
         setAttackPower(70);
         this.weakPoints = wp;
     }
