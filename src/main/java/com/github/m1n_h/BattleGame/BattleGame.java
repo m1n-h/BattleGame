@@ -95,48 +95,59 @@ public class BattleGame {
         Scanner  sc = new Scanner(System.in);
         int[] bossWeak = {32, 56, 76, 93, 184, 263, 489, 627, 723, 956};
 
-        KingSlime bossSlime = new KingSlime(bossWeak);
+        KingSlime kingSlime = new KingSlime(bossWeak);
 
-        System.out.println("\uD83C\uDFB5 쿠구구궁... 최종 보스 " + bossSlime.getName() + " 이(가) 나타났습니다! (HP: " + bossSlime.getHp() + ") \uD83C\uDFB5\\");
-        System.out.println(bossSlime.getName() + " 의 약점 구역을 예측해 타격하세요!");
+        System.out.println("\uD83C\uDFB5 쿠구구궁... 최종 보스 " + kingSlime.getName() + " 이(가) 나타났습니다! (HP: " + kingSlime.getHp() + ") \uD83C\uDFB5\\");
+        System.out.println(kingSlime.getName() + " 의 약점 구역을 예측해 타격하세요!");
         System.out.println();
 
-        while (bossSlime.getHp() > 0 && isPartyAlive(hero)) {
+        boolean isAngry = false;
+        int kingSlimeMaxHp = kingSlime.getHp();
+
+        while (kingSlime.getHp() > 0 && isPartyAlive(hero)) {
             System.out.print("공격 구역 입력: ");
             int attackZone =  sc.nextInt();
 
-            String attackResult = bossSlime.takeDamageFromScan(attackZone);
+            String attackResult = kingSlime.takeDamageFromScan(attackZone);
 
             if (attackResult.equals("Hit")) {
                 System.out.println("\uD83D\uDCA5 콰광! 약점 타격 성공! 보스의 방어벽이 무너졌습니다!");
                 System.out.println("⚔️ [PARTY ATTACK] 용사 일행이 일제히 총공격을 감행합니다! ⚔️\n");
 
                 for (Hero partyMember : hero) {
-                    if (bossSlime.getHp() > 0 && partyMember.getHp() > 0) {
-                        partyMember.attack(bossSlime);
+                    if (kingSlime.getHp() > 0 && partyMember.getHp() > 0) {
+                        partyMember.attack(kingSlime);
                         System.out.println();
                     }
                 }
-                if (bossSlime.getHp() > 0) System.out.println("🦖 " + bossSlime.getName() + " 의 남은 HP: " + bossSlime.getHp());
+                if (kingSlime.getHp() > 0) System.out.println("🦖 " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
 
             } else if (attackResult.equals("Miss")) {
-                System.out.println("🛡️ 팅! 공격이 단단한 외피에 막혔습니다. " + bossSlime.getName() + " 의 남은 HP: " + bossSlime.getHp());
+                System.out.println("🛡️ 팅! 공격이 단단한 외피에 막혔습니다. " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
             }
 
-            if (bossSlime.getHp() > 0) {
-                Hero bossVictim = getRandomAliveHero(hero);
+            if (kingSlime.getHp() > 0) {
+                Hero targetHero = getRandomAliveHero(hero);
 
-                if (bossVictim != null) {
+                if (targetHero != null) {
                     System.out.println();
-                    System.out.println("🤢 " + bossSlime.getName() + "이 거대한 몸집으로 " + bossVictim.getName() + " 을(를) 짓누릅니다! (남은 HP: " + bossVictim.getHp() + ")");
 
-                    bossVictim.takeDamage(bossSlime.getAttackPower());
+                    if (!isAngry && (kingSlime.getHp() <= kingSlimeMaxHp * 0.3)) {
+                        isAngry = true;
+
+                        System.out.println(kingSlime.getName() + " 이(가) 분노해 공격력이 2배가 되었습니다!");
+                        targetHero.takeDamage(kingSlime.getAttackPower() * 2);
+                    }
+
+                    System.out.println("🤢 " + kingSlime.getName() + " 이(가) 거대한 몸집으로 " + targetHero.getName() + " 을(를) 짓누릅니다! (남은 HP: " + targetHero.getHp() + ")");
+                    targetHero.takeDamage(kingSlime.getAttackPower());
+
                     System.out.println();
                 }
             }
 
-            if (bossSlime.getHp() <= 0) {
-                System.out.println("\n🎉 축하합니다! " + bossSlime.getName() + " 을(를) 완전히 격파하고 세계를 구했습니다! 🏆");
+            if (kingSlime.getHp() <= 0) {
+                System.out.println("\n🎉 축하합니다! " + kingSlime.getName() + " 을(를) 완전히 격파하고 세계를 구했습니다! 🏆");
                 break;
             }
 
