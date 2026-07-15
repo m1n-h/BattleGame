@@ -17,6 +17,9 @@ public class FireBomb implements Usable, Throwable {
     public void throwAt(Monster target) {
         System.out.println("💥 " + name + " 을(를) " + target.getName() + "에게 힘껏 던졌습니다!");
         target.takeDamage(damage);
-        System.out.println("🔥 " + target.getName() + " 이(가) 불타오르며 " + damage + "의 피해를 입었습니다. (남은 HP: " + target.getHp() + ")");
+
+        System.out.println("🔥 " + target.getName() + " 이(가) " + damage + "의 피해를 입었습니다. (남은 HP: " + target.getHp() + ")");
+
+        target.applyBurn(3);
     }
 }
