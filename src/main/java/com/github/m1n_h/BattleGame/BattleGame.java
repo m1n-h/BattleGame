@@ -1,12 +1,10 @@
 package com.github.m1n_h.BattleGame;
 
 import com.github.m1n_h.BattleGame.character.Usable;
-import com.github.m1n_h.BattleGame.item.Throwable;
+import com.github.m1n_h.BattleGame.item.*;
 
 import com.github.m1n_h.BattleGame.character.*;
-import com.github.m1n_h.BattleGame.item.FireBomb;
-import com.github.m1n_h.BattleGame.item.Potion;
-import com.github.m1n_h.BattleGame.item.Shop;
+import com.github.m1n_h.BattleGame.item.Throwable;
 import com.github.m1n_h.BattleGame.monster.Goblin;
 import com.github.m1n_h.BattleGame.monster.KingSlime;
 import com.github.m1n_h.BattleGame.monster.Monster;
@@ -31,12 +29,14 @@ public class BattleGame {
             monster.add(new Goblin(i));
         }
 
-        Usable[] potion = new Usable[2];
-        potion[0] = new Potion("HP 포션", 70, 0);
-        potion[1] = new Potion("MP 포션", 0, 70);
+        Shop shop = new Shop();
 
-        Usable[] item = new Usable[1];
-        item[0] = new FireBomb();
+        Usable[] inventory = new Usable[5];
+        inventory[0] = new Potion("HP 포션", 70, 0);
+        inventory[1] = new Potion("MP 포션", 0, 70);
+        inventory[2] = null;
+        inventory[3] = null;
+        inventory[4] = null;
 
         System.out.println("GAME START! \uD83C\uDFB5\n");
         System.out.println("⚠\uFE0F 몬스터 연합군 " + monster.size() + "마리 출몰!!\n");
@@ -90,16 +90,18 @@ public class BattleGame {
             Hero lowHpVictim = getLowestHpHero(hero);
             Hero lowMpVictim = getLowestMpHero(hero);
 
-            for (Usable potionItem : potion) {
-                potionItem.use(lowHpVictim);
-                potionItem.use(lowMpVictim);
+            for (Usable inventoryItem : inventory) {
+                if (inventoryItem != null) {
+                    inventoryItem.use(lowHpVictim);
+                    inventoryItem.use(lowMpVictim);
+                }
             }
 
-            gold = Shop.openShop(hero, gold);
+            gold = Shop.openShop(hero, gold, inventory);
         }
 
 
-        Scanner  sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         int[] bossWeak = {32, 56, 76, 93, 184, 263, 489, 627, 723, 956};
 
         KingSlime kingSlime = new KingSlime(bossWeak);
@@ -113,10 +115,10 @@ public class BattleGame {
 
         while (kingSlime.getHp() > 0 && isPartyAlive(hero)) {
 
-            for (int i = 0; i < item.length; i++) {
-                if (item[i] instanceof Throwable) {
-                    ((Throwable) item[i]).throwAt(kingSlime);
-                    item[i] = null;
+            for (int i = 0; i < inventory.length; i++) {
+                if (inventory[i] instanceof Throwable) {
+                    ((Throwable) inventory[i]).throwAt(kingSlime);
+                    inventory[i] = null;
                     break;
                 }
             }
@@ -145,6 +147,12 @@ public class BattleGame {
             if (kingSlime.getHp() > 0) {
                 Hero targetHero = getRandomAliveHero(hero);
 
+                kingSlime.processTurnEffect();
+                if (kingSlime.getHp() <= 0) {
+                    System.out.println("💀 " + kingSlime.getName() + " 이(가) 화상 피해를 버티지 못하고 쓰러졌습니다!");
+                    break;
+                }
+
                 if (targetHero != null) {
                     System.out.println();
 
@@ -152,12 +160,15 @@ public class BattleGame {
                         isAngry = true;
 
                         System.out.println(kingSlime.getName() + " 이(가) 분노해 공격력이 2배가 되었습니다!");
-                        targetHero.takeDamage(kingSlime.getAttackPower() * 2);
+                        //targetHero.takeDamage(kingSlime.getAttackPower() * 2);
                     }
 
-                    System.out.println("🤢 " + kingSlime.getName() + " 이(가) 거대한 몸집으로 " + targetHero.getName() + " 을(를) 짓누릅니다! (남은 HP: " + targetHero.getHp() + ")");
-                    targetHero.takeDamage(kingSlime.getAttackPower());
+                    System.out.println("🤢 " + kingSlime.getName() + " 이(가) 거대한 몸집으로 " + targetHero.getName() + " 을(를) 짓누릅니다!");
 
+                    int finalDamage = isAngry ? kingSlime.getAttackPower() * 2 : kingSlime.getAttackPower();
+                    targetHero.takeDamage(finalDamage);
+
+                    System.out.println("   (남은 HP: " + targetHero.getHp() + ")");
                     System.out.println();
                 }
             }
