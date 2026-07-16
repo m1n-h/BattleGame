@@ -107,7 +107,7 @@ public class Shop {
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) {
                 inventory[i] = newItem;
-                System.out.println("🛒 상점에서 " + newItem + " 을(를) 구매하여 인벤토리 " + (i+1) + "번 칸에 추가 되었습니다.");
+                System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매하여 인벤토리 " + (i+1) + "번 칸에 추가 되었습니다.");
                 return true;
             }
         }
