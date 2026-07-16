@@ -22,4 +22,7 @@ public class FireBomb implements Usable, Throwable {
 
         target.applyBurn(3);
     }
+
+    @Override
+    public String getItemName() { return this.name; }
 }

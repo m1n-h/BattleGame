@@ -27,5 +27,8 @@ public class Potion implements Usable {
         }
     }
 
+    @Override
+    public String getItemName() { return this.name;}
+
 
 }

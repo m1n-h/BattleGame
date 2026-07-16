@@ -28,4 +28,7 @@ public class RustSword implements Usable, Equippable{
             System.out.println("🛡️ " + target.getName() + " 이(가) " + name + " 을(를) 장착 해제했습니다.");
         }
     }
+
+    @Override
+    public String getItemName() { return this.name; }
 }

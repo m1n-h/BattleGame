@@ -115,6 +115,21 @@ public class BattleGame {
 
         while (kingSlime.getHp() > 0 && isPartyAlive(hero)) {
 
+            for (int i = 0; i < hero.size(); i++) {
+                Hero currentHero = hero.get(i);
+                if (currentHero.getHp() <= 0) continue;
+
+                System.out.println("\\n\uD83D\uDEE1\uFE0F [" + currentHero.getName() + " 의 턴]");
+                System.out.print("행동을 선택하세요 (1. 가방 열기 / 2. 전투 시작(자동)) :");
+
+                int choice = sc.nextInt();
+                if (choice == 1) {
+                    useItemBattle(currentHero, inventory, kingSlime, sc);
+                }
+
+                currentHero.attack(kingSlime);
+            }
+
             for (int i = 0; i < inventory.length; i++) {
                 if (inventory[i] instanceof Throwable) {
                     ((Throwable) inventory[i]).throwAt(kingSlime);
@@ -240,5 +255,47 @@ public class BattleGame {
         }
 
         return lowestMpHero;
+    }
+
+    public static void useItemBattle(Hero user, Usable[] inventory, Monster target, Scanner sc) {
+        System.out.println("\\n\uD83C\uDF92 [ 인벤토리 목록 ]");
+        boolean hasItem = false;
+
+        for (int i = 0; i < inventory.length; i++) {
+            if (inventory[i] != null) {
+                System.out.println((i + 1) + ". " + inventory[i].getItemName());
+                hasItem = true;
+            } else {
+                System.out.println((i + 1) + ". [ 비어있음 ]");
+            }
+        }
+
+        if (!hasItem) {
+            System.out.println("❌ 인벤토리가 비어 있습니다.");
+            return;
+        }
+
+        System.out.println("사용할 아이템 번호를 선택하세요 (0 : 취소) : ");
+        int itemChoice = sc.nextInt() - 1;
+
+        if (itemChoice < 0 || itemChoice >= inventory.length || inventory[itemChoice] == null) {
+            System.out.println("취소했거나 올바르지 않은 슬롯 입니다.");
+            return;
+        }
+
+        Usable selectedItem = inventory[itemChoice];
+
+        if (selectedItem instanceof Potion) {
+            selectedItem.use(user);
+            inventory[itemChoice] = null;
+
+        } else if (selectedItem instanceof FireBomb) {
+            ((FireBomb) selectedItem).throwAt(target);
+            inventory[itemChoice] = null;
+            
+        } else if (selectedItem instanceof Equippable) {
+            ((Equippable) selectedItem).equip(user);
+            inventory[itemChoice] = null;
+        }
     }
 }
