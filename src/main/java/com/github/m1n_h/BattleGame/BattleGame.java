@@ -22,6 +22,7 @@ public class BattleGame {
         hero.add(new Archer());
 
         int gold = 100;
+        int addGold = 20;
 
         ArrayList<Monster> monster = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
@@ -55,9 +56,13 @@ public class BattleGame {
                 }
 
                 if (target.getHp() <= 0) {
-                    System.out.println("🎉 " + target.getName() + " 이(가) 쓰러졌습니다!\n");
+                    System.out.println("🎉 " + target.getName() + " 이(가) 쓰러졌습니다!");
 
-                    if (victim != null) gold += 20;
+                    if (isPartyAlive(hero)) {
+                        gold += addGold;
+                        System.out.println("💎 " + target.getName() + "의 전리품: +" + addGold + "G!");
+                        System.out.println("💰 [현재 보유 골드: " + gold + "G]");
+                    }
 
                     /*if (lowHpVictim != null) {
                         lowHpVictim.setHp(lowHpVictim.getHp() + 50);
@@ -115,19 +120,43 @@ public class BattleGame {
 
         while (kingSlime.getHp() > 0 && isPartyAlive(hero)) {
 
-            for (int i = 0; i < hero.size(); i++) {
-                Hero currentHero = hero.get(i);
-                if (currentHero.getHp() <= 0) continue;
+            for (Hero activeHero : hero) {
+                if (activeHero.getHp() <= 0) continue;
 
-                System.out.println("\\n\uD83D\uDEE1\uFE0F [" + currentHero.getName() + " 의 턴]");
-                System.out.print("행동을 선택하세요 (1. 가방 열기 / 2. 전투 시작(자동)) :");
+                boolean isTurnUsed = false;
 
-                int choice = sc.nextInt();
-                if (choice == 1) {
-                    useItemBattle(currentHero, inventory, kingSlime, sc);
+                while (!isTurnUsed) {
+                    System.out.println("\n\uD83D\uDEE1\uFE0F [" + activeHero.getName() + " 의 턴]");
+                    System.out.print("⚔\uFE0F 1. 공격 | \uD83C\uDF92 2. 인벤토리 :");
+
+                    int choice = sc.nextInt();
+                    if (choice == 1) {
+                        activeHero.attack(kingSlime);
+                        isTurnUsed = true;
+
+                    } else if (choice == 2) {
+                        int beforeEmptyCount = 0;
+                        for (Usable item : inventory) {
+                            if (item == null) beforeEmptyCount++;
+                        }
+
+                        useItemBattle(activeHero, inventory, kingSlime, sc);
+
+                        int afterEmptyCount = 0;
+                        for (Usable item : inventory) {
+                            if (item == null) afterEmptyCount++;
+                        }
+
+                        if (afterEmptyCount > beforeEmptyCount) {
+                            System.out.println("✨ 아이템을 성공적으로 사용하여 턴이 소모됩니다.");
+                            isTurnUsed = true;
+                        } else {
+                            System.out.println("↩️ 아이템을 사용하지 않았습니다. 다시 행동을 선택해 주세요.");
+                        }
+                    }
                 }
 
-                currentHero.attack(kingSlime);
+                if (kingSlime.getHp() <= 0) break;
             }
 
             for (int i = 0; i < inventory.length; i++) {
@@ -258,7 +287,7 @@ public class BattleGame {
     }
 
     public static void useItemBattle(Hero user, Usable[] inventory, Monster target, Scanner sc) {
-        System.out.println("\\n\uD83C\uDF92 [ 인벤토리 목록 ]");
+        System.out.println("\n\uD83C\uDF92 [ 인벤토리 목록 ]");
         boolean hasItem = false;
 
         for (int i = 0; i < inventory.length; i++) {
