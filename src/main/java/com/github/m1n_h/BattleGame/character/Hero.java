@@ -1,5 +1,6 @@
 package com.github.m1n_h.BattleGame.character;
 
+import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
@@ -7,6 +8,8 @@ public abstract class Hero extends Character {
     private int mp;
     private int level;
     private Skill[] skill;
+    private int gold = 100;
+    private Usable[] inventory = new Usable[5];
 
     Weapon weapon;
 
@@ -26,5 +29,17 @@ public abstract class Hero extends Character {
     public Weapon getWeapon() { return this.weapon; }
 
     public abstract void attack(Monster target);
+
+    public int getGold() { return this.gold; }
+    public void setGold(int gold) { this.gold = gold; }
+
+    public Usable[] getInventory() { return this.inventory; }
+
+    public void payGold(int price) {
+        if (this.gold < price) {
+            throw new NotEnoughGoldException("❌ [골드 부족] 필요 골드: " + price + "G / 보유 골드: " + this.gold + "G");
+        }
+        this.gold -= price;
+    }
 
 }

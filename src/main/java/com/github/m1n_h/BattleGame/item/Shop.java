@@ -2,6 +2,7 @@ package com.github.m1n_h.BattleGame.item;
 
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
+import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
 import com.github.m1n_h.BattleGame.item.Equippable;
 
 import java.util.ArrayList;
@@ -9,8 +10,9 @@ import java.util.Scanner;
 
 public class Shop {
 
-    public static int openShop(ArrayList<Hero> hero, int currentGold, Usable[] inventory) {
+    public static void openShop(ArrayList<Hero> hero) {
         Scanner sc = new Scanner(System.in);
+        Hero buyerHero = hero.get(0);
 
         ShopItem[] items = {
                 new ShopItem("기본 숫돌 (공격력 +5)", 30, 5),
@@ -22,7 +24,7 @@ public class Shop {
 
         while (true) {
             System.out.println("\n\uD83D\uDED2 [비밀 상점] 상품 목록");
-            System.out.println("💰 현재 보유 골드: " + currentGold + "G");
+            System.out.println("💰 현재 보유 골드: " + buyerHero.getGold() + "G");
 
             for (int i = 0; i < items.length; i++) {
                 System.out.println((i + 1) + ". " + items[i].getItemName() + " (" + items[i].getItemPrice() + "G)");
@@ -40,45 +42,30 @@ public class Shop {
             if (choice > 0 && choice <= items.length) {
                 ShopItem selectedItem = items[choice - 1];
 
-                if (currentGold >= selectedItem.getItemPrice()) {
+                try {
                     if (selectedItem.getItemName().contains("화염병")) {
                         FireBomb newBomb = new FireBomb();
-                        boolean buySuccess = buyItem(inventory, newBomb);
-                        if (buySuccess) {
-                            currentGold -= selectedItem.getItemPrice();
-                            System.out.println(
-                                    "✨ [구매 성공] 인벤토리에 " + selectedItem.getItemName() + " 추가 완료! " +
-                                    "남은 골드: " + currentGold + "G"
-                            );
-                        } else {
-                            System.out.println("❌ [구매 실패] 공간 부족!");
-                        }
+
+                        buyItem(buyerHero, newBomb, selectedItem.getItemPrice());
+                        System.out.println("✨ [구매 완료] 인벤토리에 " + selectedItem.getItemName() + " 추가 완료!");
 
                     } else if (selectedItem.getItemName().contains("검")) {
                         RustSword newSword = new RustSword();
-                        boolean buySuccess = buyItem(inventory, newSword);
-                        if (buySuccess) {
-                            currentGold -= selectedItem.getItemPrice();
-                            System.out.println(
-                                    "✨ [구매 성공] 인벤토리에 " + selectedItem.getItemName() + " 추가 완료! " +
-                                    "남은 골드: " + currentGold + "G"
-                            );
 
-                            System.out.print(selectedItem.getItemName() + " 장착 여부 선택 (1. 장착 / 2. 미장착): ");
-                            Scanner swordEquip = new Scanner(System.in);
-                            int swordEquipChoice = swordEquip.nextInt();
-                            if (swordEquipChoice == 1) {
-                                Hero targetHero = hero.get(0);
-                                newSword.equip(targetHero);
-                            }
+                        buyItem(buyerHero, newSword, selectedItem.getItemPrice());
 
-                        } else {
-                            System.out.println("❌ [구매 실패] 공간 부족!");
+                        System.out.println("✨ [구매 완료] 인벤토리에 " + selectedItem.getItemName() + " 추가 완료!");
+                        System.out.print(selectedItem.getItemName() + " 장착 여부 선택 (1. 장착 / 2. 미장착): ");
+                        int swordEquipChoice = sc.nextInt();
+                        if (swordEquipChoice == 1) newSword.equip(buyerHero);
+                    } else {
+
+                        if (buyerHero.getGold() < selectedItem.getItemPrice()) {
+                            throw new NotEnoughGoldException("❌ [골드 부족] 필요 골드: " + selectedItem.getItemPrice() + "G / 보유 골드: " + buyerHero.getGold() + "G");
                         }
 
-                    } else {
-                        currentGold -= selectedItem.getItemPrice();
-                        System.out.println("✨ [구매 성공] 남은 골드: " + currentGold + "G");
+                        buyerHero.payGold(selectedItem.getItemPrice());
+                        System.out.println("✨ [구매 성공] 남은 골드: " +  buyerHero.getGold() + "G");
 
                         for (Hero member : hero) {
                             System.out.println(member.getName() + " 의 무기 강화를 시도합니다.");
@@ -90,40 +77,39 @@ public class Shop {
                                     + beforeDamage + " ➡️ " + afterDamage + " (+" + selectedItem.getUpgradeAmount() + ")");
                         }
                     }
-
-                } else {
-                    System.out.println("❌ 골드가 부족합니다!");
+                } catch (NotEnoughGoldException e) {
+                    System.out.println("❌ [구매 실패] " + e.getMessage());
                 }
 
             } else {
                 System.out.println("⚠️ 잘못된 입력입니다.");
             }
         }
-
-        return currentGold;
     }
 
-    public static boolean buyItem(Usable[] inventory, Usable newItem) {
+    public static void buyItem(Hero hero, Usable newItem, int itemPrice) {
+        if (hero.getGold() < itemPrice) {
+            throw new NotEnoughGoldException("❌ [골드부족] 필요 골드: " + itemPrice + "G / 보유 골드: " + hero.getGold() + "G");
+        }
+
+        Usable[] inventory = hero.getInventory();
+        boolean isAdded = false;
         for (int i = 0; i < inventory.length; i++) {
             if (inventory[i] == null) {
                 inventory[i] = newItem;
-                System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매하여 인벤토리 " + (i+1) + "번 칸에 추가 되었습니다.");
-                return true;
+                System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매하여 인벤토리 " + (i+1) + "번 칸에 추가되었습니다.");
+                isAdded = true;
+                break;
             }
         }
-        System.out.println("❌ 공간이 부족합니다!");
-        return false;
-    }
 
-    public boolean buyAndDeliver(Usable[] inventory, ShopItem selectedShopItem) {
-        String name = selectedShopItem.getItemName();
-        boolean result = false;
-
-        if (name.contains("화염병")) {
-            FireBomb newBomb = new FireBomb();
-            result = buyItem(inventory, newBomb);
+        if (!isAdded) {
+            System.out.println("❌ 인벤토리 공간 부족");
+            return;
         }
-        
-        return result;
+
+        hero.setGold(hero.getGold() - itemPrice);
+        System.out.println("💰 남은 골드: " + hero.getGold() + "G");
     }
+
 }

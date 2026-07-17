@@ -21,7 +21,7 @@ public class BattleGame {
         hero.add(new Mage());
         hero.add(new Archer());
 
-        int gold = 100;
+        Usable[] inventory = hero.get(0).getInventory();
         int addGold = 20;
 
         ArrayList<Monster> monster = new ArrayList<>();
@@ -30,14 +30,6 @@ public class BattleGame {
             monster.add(new Goblin(i));
         }
 
-        Shop shop = new Shop();
-
-        Usable[] inventory = new Usable[5];
-        inventory[0] = new Potion("HP 포션", 70, 0);
-        inventory[1] = new Potion("MP 포션", 0, 70);
-        inventory[2] = null;
-        inventory[3] = null;
-        inventory[4] = null;
 
         System.out.println("GAME START! \uD83C\uDFB5\n");
         System.out.println("⚠\uFE0F 몬스터 연합군 " + monster.size() + "마리 출몰!!\n");
@@ -59,9 +51,9 @@ public class BattleGame {
                     System.out.println("🎉 " + target.getName() + " 이(가) 쓰러졌습니다!");
 
                     if (isPartyAlive(hero)) {
-                        gold += addGold;
+                        hero.get(0).setGold(hero.get(0).getGold() + addGold);
                         System.out.println("💎 " + target.getName() + "의 전리품: +" + addGold + "G!");
-                        System.out.println("💰 [현재 보유 골드: " + gold + "G]");
+                        System.out.println("💰 [현재 보유 골드: " + hero.get(0).getGold() + "G]");
                     }
 
                     /*if (lowHpVictim != null) {
@@ -92,6 +84,9 @@ public class BattleGame {
         }
 
         if (isPartyAlive(hero)) {
+
+            Shop.openShop(hero);
+
             Hero lowHpVictim = getLowestHpHero(hero);
             Hero lowMpVictim = getLowestMpHero(hero);
 
@@ -101,8 +96,6 @@ public class BattleGame {
                     inventoryItem.use(lowMpVictim);
                 }
             }
-
-            gold = Shop.openShop(hero, gold, inventory);
         }
 
 
