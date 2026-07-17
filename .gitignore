@@ -1,0 +1,15 @@
+out/
+bin/
+build/
+*.class
+
+.idea/
+*.iml
+*.iws
+*.ipr
+
+Thumbs.db
+.DS_Store
+
+*.log
+*.tmp
