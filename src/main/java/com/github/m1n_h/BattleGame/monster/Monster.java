@@ -3,16 +3,23 @@ package com.github.m1n_h.BattleGame.monster;
 import com.github.m1n_h.BattleGame.character.Character;
 import com.github.m1n_h.BattleGame.character.Hero;
 
-public class Monster extends Character {
+public abstract class Monster extends Character {
     private int exp;
     private int dropItem;
     private String[] attackName;
     private int burnTurns = 0;
 
+    public Monster(String name, int hp, int attackPower, int exp) {
+        setName(name);
+        setHp(hp);
+        setAttackPower(attackPower);
+        this.exp = exp;
+    }
+
     public String[] getAttackName() { return this.attackName; }
     public void setAttackName(String[] attackName) { this.attackName = attackName;}
 
-    public void attack(Hero target) {}
+    public abstract void attack(Hero target);
 
     public void applyBurn(int turns) {
         this.burnTurns = turns;
