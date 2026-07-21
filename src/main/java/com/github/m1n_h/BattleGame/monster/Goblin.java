@@ -8,7 +8,7 @@ public class Goblin extends Monster {
     int id;
 
     public Goblin(int id) {
-        super("고블린(" + id + ")", 40, 20, 25);
+        super("고블린(" + id + ")", 40, 20, 25, 15);
         this.id = id;
         setAttackName(new String[] {
                 "야비한 돌던지기",

@@ -6,11 +6,7 @@ import com.github.m1n_h.BattleGame.item.Weapon;
 public class Warrior extends Hero {
 
     public Warrior() {
-        setName("레오");
-        setHp(250);
-        setMp(100);
-        setLevel(1);
-        setAttackPower(25);
+        super("레오", 250, 100, 30);
         setSkill(new Skill[] {
                 new Skill("휠윈드 소용돌이 🌪️", 1.5, 25),
                 new Skill("파워 스트라이크 💥", 2.2, 15),

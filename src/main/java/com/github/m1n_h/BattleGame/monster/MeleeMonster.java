@@ -4,8 +4,8 @@ import com.github.m1n_h.BattleGame.character.Hero;
 
 public class MeleeMonster extends Monster {
 
-    public MeleeMonster(String name, int hp, int attackPower, int exp, String[] skills) {
-        super(name, hp, attackPower, exp);
+    public MeleeMonster(String name, int hp, int attackPower, int exp, String[] skills, int gold) {
+        super(name, hp, attackPower, exp, gold);
         setAttackName(skills);
     }
 

@@ -8,7 +8,7 @@ public class Slime extends Monster {
     int id;
 
     public Slime(int id) {
-        super("슬라임(" + id + ")", 20, 10, 20);
+        super("슬라임(" + id + ")", 20, 10, 20, 10);
         this.id = id;
         setAttackName(new String[] {
                 "물말랑 몸통 박치기",

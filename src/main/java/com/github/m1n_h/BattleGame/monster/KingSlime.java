@@ -8,7 +8,7 @@ public class KingSlime extends Monster {
     private int destroyedWeakPoints = 0;
 
     public KingSlime(int[] wp) {
-        super("킹슬라임", 800, 70, 200);
+        super("킹슬라임", 800, 70, 200, 100);
         this.weakPoints = wp;
         setAttackName(new String[] {
                 "거대한 몸으로 짓누르기",

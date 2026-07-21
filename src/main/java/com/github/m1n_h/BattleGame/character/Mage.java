@@ -6,11 +6,7 @@ import com.github.m1n_h.BattleGame.item.Weapon;
 public class Mage extends Hero {
 
     public Mage() {
-        setName("아리엘");
-        setHp(120);
-        setMp(250);
-        setLevel(1);
-        setAttackPower(15);
+        super("아리엘", 150, 250, 15);
         setSkill(new Skill[] {
                 new Skill("체인 라이트닝 ⚡", 1.8, 20),
                 new Skill("블리자드 폭풍 ❄️", 2.2, 30),

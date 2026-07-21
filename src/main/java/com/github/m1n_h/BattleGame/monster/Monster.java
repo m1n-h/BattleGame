@@ -8,12 +8,14 @@ public abstract class Monster extends Character {
     private int dropItem;
     private String[] attackName;
     private int burnTurns = 0;
+    private int gold;
 
-    public Monster(String name, int hp, int attackPower, int exp) {
+    public Monster(String name, int hp, int attackPower, int exp, int gold) {
         setName(name);
         setHp(hp);
         setAttackPower(attackPower);
         this.exp = exp;
+        this.gold = gold;
     }
 
     public String[] getAttackName() { return this.attackName; }
@@ -34,4 +36,8 @@ public abstract class Monster extends Character {
             this.burnTurns--;
         }
     }
+
+    public int getExp() { return this.exp; }
+
+    public int getGold() { return this.gold; }
 }

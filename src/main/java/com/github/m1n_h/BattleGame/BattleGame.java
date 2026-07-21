@@ -22,7 +22,6 @@ public class BattleGame {
         hero.add(new Archer());
 
         Usable[] inventory = hero.get(0).getInventory();
-        int addGold = 20;
 
         ArrayList<Monster> monster = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
@@ -39,11 +38,17 @@ public class BattleGame {
 
             while (isPartyAlive(hero) && target.getHp() > 0) {
                 Hero victim = getRandomAliveHero(hero);
+                Hero winner = null;
 
                 for (Hero party : hero) {
                     if (target.getHp() > 0 && party.getHp() > 0) {
                         party.attack(target);
                         System.out.println();
+
+                        if (target.getHp() <= 0) {
+                            winner = party;
+                            break;
+                        }
                     }
                 }
 
@@ -51,9 +56,7 @@ public class BattleGame {
                     System.out.println("🎉 " + target.getName() + " 이(가) 쓰러졌습니다!");
 
                     if (isPartyAlive(hero)) {
-                        hero.get(0).setGold(hero.get(0).getGold() + addGold);
-                        System.out.println("💎 " + target.getName() + "의 전리품: +" + addGold + "G!");
-                        System.out.println("💰 [현재 보유 골드: " + hero.get(0).getGold() + "G]");
+                        if (winner != null) winner.gainRewards(target);
                     }
 
                     /*if (lowHpVictim != null) {
@@ -112,6 +115,7 @@ public class BattleGame {
         int kingSlimeMaxHp = kingSlime.getHp();
 
         while (kingSlime.getHp() > 0 && isPartyAlive(hero)) {
+            Hero winner = null;
 
             for (Hero activeHero : hero) {
                 if (activeHero.getHp() <= 0) continue;
@@ -149,36 +153,49 @@ public class BattleGame {
                     }
                 }
 
-                if (kingSlime.getHp() <= 0) break;
-            }
-
-            for (int i = 0; i < inventory.length; i++) {
-                if (inventory[i] instanceof Throwable) {
-                    ((Throwable) inventory[i]).throwAt(kingSlime);
-                    inventory[i] = null;
+                if (kingSlime.getHp() <= 0) {
+                    winner = activeHero;
                     break;
                 }
             }
 
-            System.out.print("공격 구역 입력: ");
-            int attackZone =  sc.nextInt();
-
-            String attackResult = kingSlime.takeDamageFromScan(attackZone);
-
-            if (attackResult.equals("Hit")) {
-                System.out.println("\uD83D\uDCA5 콰광! 약점 타격 성공! 보스의 방어벽이 무너졌습니다!");
-                System.out.println("⚔️ [PARTY ATTACK] 용사 일행이 일제히 총공격을 감행합니다! ⚔️\n");
-
-                for (Hero partyMember : hero) {
-                    if (kingSlime.getHp() > 0 && partyMember.getHp() > 0) {
-                        partyMember.attack(kingSlime);
-                        System.out.println();
+            if (kingSlime.getHp() > 0) {
+                for (int i = 0; i < inventory.length; i++) {
+                    if (inventory[i] instanceof Throwable) {
+                        ((Throwable) inventory[i]).throwAt(kingSlime);
+                        inventory[i] = null;
+                        break;
                     }
                 }
-                if (kingSlime.getHp() > 0) System.out.println("🦖 " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
+            }
 
-            } else if (attackResult.equals("Miss")) {
-                System.out.println("🛡️ 팅! 공격이 단단한 외피에 막혔습니다. " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
+            if (kingSlime.getHp() > 0) {
+                System.out.print("공격 구역 입력: ");
+                int attackZone = sc.nextInt();
+
+                String attackResult = kingSlime.takeDamageFromScan(attackZone);
+
+                if (attackResult.equals("Hit")) {
+                    System.out.println("\uD83D\uDCA5 콰광! 약점 타격 성공! 보스의 방어벽이 무너졌습니다!");
+                    System.out.println("⚔️ [PARTY ATTACK] 용사 일행이 일제히 총공격을 감행합니다! ⚔️\n");
+
+                    for (Hero partyMember : hero) {
+                        if (kingSlime.getHp() > 0 && partyMember.getHp() > 0) {
+                            partyMember.attack(kingSlime);
+                            System.out.println();
+
+                            if (kingSlime.getHp() <= 0) {
+                                winner = partyMember;
+                                break;
+                            }
+                        }
+                    }
+                    if (kingSlime.getHp() > 0)
+                        System.out.println("🦖 " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
+
+                } else if (attackResult.equals("Miss")) {
+                    System.out.println("🛡️ 팅! 공격이 단단한 외피에 막혔습니다. " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
+                }
             }
 
             if (kingSlime.getHp() > 0) {
@@ -186,6 +203,7 @@ public class BattleGame {
 
                 kingSlime.processTurnEffect();
                 if (kingSlime.getHp() <= 0) {
+                    winner = targetHero;
                     System.out.println("💀 " + kingSlime.getName() + " 이(가) 화상 피해를 버티지 못하고 쓰러졌습니다!");
                     break;
                 }
@@ -211,6 +229,7 @@ public class BattleGame {
             }
 
             if (kingSlime.getHp() <= 0) {
+                if (winner != null) winner.gainRewards(kingSlime);
                 System.out.println("\n🎉 축하합니다! " + kingSlime.getName() + " 을(를) 완전히 격파하고 세계를 구했습니다! 🏆");
                 break;
             }
@@ -320,4 +339,5 @@ public class BattleGame {
             inventory[itemChoice] = null;
         }
     }
+
 }

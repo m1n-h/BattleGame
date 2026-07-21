@@ -6,11 +6,7 @@ import com.github.m1n_h.BattleGame.item.Weapon;
 public class Archer extends Hero {
 
     public Archer() {
-        setName("리오르");
-        setHp(200);
-        setMp(170);
-        setLevel(1);
-        setAttackPower(20);
+        super("앨리", 200, 170, 20);
         setSkill(new Skill[] {
                 new Skill("화살비 \uD83C\uDF27\uFE0F", 1.2, 30),
                 new Skill("관통의 일격 ⚡", 2.2, 20),
