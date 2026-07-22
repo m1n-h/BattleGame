@@ -10,6 +10,7 @@ import com.github.m1n_h.BattleGame.monster.KingSlime;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.monster.Slime;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -170,31 +171,37 @@ public class BattleGame {
             }
 
             if (kingSlime.getHp() > 0) {
-                System.out.print("공격 구역 입력: ");
-                int attackZone = sc.nextInt();
 
-                String attackResult = kingSlime.takeDamageFromScan(attackZone);
+                try {
+                    System.out.print("공격 구역 입력: ");
+                    int attackZone = sc.nextInt();
+                    String attackResult = kingSlime.takeDamageFromScan(attackZone);
 
-                if (attackResult.equals("Hit")) {
-                    System.out.println("\uD83D\uDCA5 콰광! 약점 타격 성공! 보스의 방어벽이 무너졌습니다!");
-                    System.out.println("⚔️ [PARTY ATTACK] 용사 일행이 일제히 총공격을 감행합니다! ⚔️\n");
+                    if (attackResult.equals("Hit")) {
+                        System.out.println("\uD83D\uDCA5 콰광! 약점 타격 성공! 보스의 방어벽이 무너졌습니다!");
+                        System.out.println("⚔️ [PARTY ATTACK] 용사 일행이 일제히 총공격을 감행합니다! ⚔️\n");
 
-                    for (Hero partyMember : hero) {
-                        if (kingSlime.getHp() > 0 && partyMember.getHp() > 0) {
-                            partyMember.attack(kingSlime);
-                            System.out.println();
+                        for (Hero partyMember : hero) {
+                            if (kingSlime.getHp() > 0 && partyMember.getHp() > 0) {
+                                partyMember.attack(kingSlime);
+                                System.out.println();
 
-                            if (kingSlime.getHp() <= 0) {
-                                winner = partyMember;
-                                break;
+                                if (kingSlime.getHp() <= 0) {
+                                    winner = partyMember;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    if (kingSlime.getHp() > 0)
-                        System.out.println("🦖 " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
+                        if (kingSlime.getHp() > 0)
+                            System.out.println("🦖 " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
 
-                } else if (attackResult.equals("Miss")) {
-                    System.out.println("🛡️ 팅! 공격이 단단한 외피에 막혔습니다. " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
+                    } else if (attackResult.equals("Miss")) {
+                        System.out.println("🛡️ 팅! 공격이 단단한 외피에 막혔습니다. " + kingSlime.getName() + " 의 남은 HP: " + kingSlime.getHp());
+                    }
+
+                } catch (InputMismatchException e) {
+                    System.out.println("❌ 잘못된 입력입니다.");
+                    sc.nextLine();
                 }
             }
 
