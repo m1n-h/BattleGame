@@ -31,4 +31,15 @@ public class RustSword implements Usable, Equippable{
 
     @Override
     public String getItemName() { return this.name; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RustSword that = (RustSword) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() { return name.hashCode(); }
 }

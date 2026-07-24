@@ -25,4 +25,15 @@ public class FireBomb implements Usable, Throwable {
 
     @Override
     public String getItemName() { return this.name; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FireBomb that = (FireBomb) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() { return name.hashCode(); }
 }

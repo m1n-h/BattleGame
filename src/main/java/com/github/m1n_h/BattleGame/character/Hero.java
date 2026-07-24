@@ -4,12 +4,15 @@ import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public abstract class Hero extends Character {
     private int mp;
     private int level = 1;
     private Skill[] skill;
     private int gold = 100;
-    private Usable[] inventory = new Usable[5];
+    private Map<Usable, Integer> inventory = new HashMap<>();
     private int exp;
 
     Weapon weapon;
@@ -40,7 +43,7 @@ public abstract class Hero extends Character {
     public int getGold() { return this.gold; }
     public void setGold(int gold) { this.gold = gold; }
 
-    public Usable[] getInventory() { return this.inventory; }
+    public Map<Usable, Integer> getInventory() { return this.inventory; }
 
     public void payGold(int price) {
         if (this.gold < price) {
@@ -84,7 +87,14 @@ public abstract class Hero extends Character {
         System.out.print("\uD83D\uDCAA [STATE UP] ");
         System.out.print("HP " + bonusHp);
         System.out.print(" / MP " + bonusMp);
-        System.out.print(" / 공격력 " + bonusAttackPower + " 향상");
+        System.out.println(" / 공격력 " + bonusAttackPower + " 향상");
+    }
+
+    public void addItem(Usable item, int amount) {
+        int currentCount = inventory.getOrDefault(item, 0);
+        inventory.put(item, currentCount + amount);
+
+        System.out.println("\uD83D\uDCE6 [아이템 획득] " + item.getItemName() + " 을(를) " + amount + "개 획득 하셨습니다!");
     }
 
 }

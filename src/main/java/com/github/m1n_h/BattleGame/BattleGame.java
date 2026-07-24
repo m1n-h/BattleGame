@@ -10,9 +10,7 @@ import com.github.m1n_h.BattleGame.monster.KingSlime;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.monster.Slime;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
 
 public class BattleGame {
     public static void main(String[] args) {
@@ -22,7 +20,7 @@ public class BattleGame {
         hero.add(new Mage());
         hero.add(new Archer());
 
-        Usable[] inventory = hero.get(0).getInventory();
+        Map<Usable, Integer> inventory = hero.get(0).getInventory();
 
         ArrayList<Monster> monster = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
@@ -94,12 +92,28 @@ public class BattleGame {
             Hero lowHpVictim = getLowestHpHero(hero);
             Hero lowMpVictim = getLowestMpHero(hero);
 
-            for (Usable inventoryItem : inventory) {
-                if (inventoryItem != null) {
-                    inventoryItem.use(lowHpVictim);
-                    inventoryItem.use(lowMpVictim);
+            Iterator<Map.Entry<Usable, Integer>> iterator = inventory.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<Usable, Integer> entry = iterator.next();
+                Usable item = entry.getKey();
+                int count = entry.getValue();
+
+                if (count <= 0) {
+                    System.out.println("❌ 보유한 아이템이 없습니다!");
+                    continue;
                 }
+
+                if (count > 1) {
+                    inventory.put(item, count - 1);
+                } else {
+                    iterator.remove();
+                }
+
+                item.use(lowHpVictim);
+                item.use(lowMpVictim);
+
             }
+
         }
 
 
@@ -134,18 +148,18 @@ public class BattleGame {
 
                     } else if (choice == 2) {
                         int beforeEmptyCount = 0;
-                        for (Usable item : inventory) {
-                            if (item == null) beforeEmptyCount++;
+                        for (int count : inventory.values()) {
+                            beforeEmptyCount += count;
                         }
 
                         useItemBattle(activeHero, inventory, kingSlime, sc);
 
                         int afterEmptyCount = 0;
-                        for (Usable item : inventory) {
-                            if (item == null) afterEmptyCount++;
+                        for (int count : inventory.values()) {
+                            afterEmptyCount += count;
                         }
 
-                        if (afterEmptyCount > beforeEmptyCount) {
+                        if (afterEmptyCount < beforeEmptyCount) {
                             System.out.println("✨ 아이템을 성공적으로 사용하여 턴이 소모됩니다.");
                             isTurnUsed = true;
                         } else {
@@ -161,10 +175,19 @@ public class BattleGame {
             }
 
             if (kingSlime.getHp() > 0) {
-                for (int i = 0; i < inventory.length; i++) {
-                    if (inventory[i] instanceof Throwable) {
-                        ((Throwable) inventory[i]).throwAt(kingSlime);
-                        inventory[i] = null;
+                List<Usable> itemList = new ArrayList<>(inventory.keySet());
+                for (int i = 0; i < itemList.size(); i++) {
+                    Usable item = itemList.get(i);
+                    if (item instanceof Throwable) {
+                        ((Throwable) item).throwAt(kingSlime);
+
+                        int currentCount = inventory.get(item);
+                        if (currentCount > 1) {
+                            inventory.put(item, currentCount - 1);
+                        } else {
+                            inventory.remove(item);
+                        }
+
                         break;
                     }
                 }
@@ -305,16 +328,20 @@ public class BattleGame {
         return lowestMpHero;
     }
 
-    public static void useItemBattle(Hero user, Usable[] inventory, Monster target, Scanner sc) {
+    public static void useItemBattle(Hero user, Map<Usable, Integer> inventory, Monster target, Scanner sc) {
         System.out.println("\n\uD83C\uDF92 [ 인벤토리 목록 ]");
         boolean hasItem = false;
 
-        for (int i = 0; i < inventory.length; i++) {
-            if (inventory[i] != null) {
-                System.out.println((i + 1) + ". " + inventory[i].getItemName());
+        int index = 1;
+        for (Map.Entry<Usable, Integer> entry : inventory.entrySet()) {
+            Usable item = entry.getKey();
+            int count = entry.getValue();
+            if (inventory.get(item) != null) {
+                System.out.println(index + ". " + item.getItemName() + "(보유: " +  count + "개)");
                 hasItem = true;
+                index++;
             } else {
-                System.out.println((i + 1) + ". [ 비어있음 ]");
+                System.out.println(index + ". [ 비어있음 ]");
             }
         }
 
@@ -326,25 +353,29 @@ public class BattleGame {
         System.out.println("사용할 아이템 번호를 선택하세요 (0 : 취소) : ");
         int itemChoice = sc.nextInt() - 1;
 
-        if (itemChoice < 0 || itemChoice >= inventory.length || inventory[itemChoice] == null) {
+        List<Usable> itemList = new ArrayList<>(inventory.keySet());
+        if (itemChoice < 0 || itemChoice >= itemList.size()) {
             System.out.println("취소했거나 올바르지 않은 슬롯 입니다.");
             return;
         }
 
-        Usable selectedItem = inventory[itemChoice];
+        Usable selectedItem = itemList.get(itemChoice);
+        int currentCount = inventory.get(selectedItem);
 
         if (selectedItem instanceof Potion) {
             selectedItem.use(user);
-            inventory[itemChoice] = null;
-
         } else if (selectedItem instanceof FireBomb) {
             ((FireBomb) selectedItem).throwAt(target);
-            inventory[itemChoice] = null;
-            
         } else if (selectedItem instanceof Equippable) {
             ((Equippable) selectedItem).equip(user);
-            inventory[itemChoice] = null;
         }
+
+        if (currentCount > 1) {
+            inventory.put(selectedItem, currentCount - 1);
+        } else {
+            inventory.remove(selectedItem);
+        }
+
     }
 
 }
