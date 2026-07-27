@@ -17,13 +17,10 @@ public class Archer extends Hero {
 
     @Override
     public void attack(Monster target) {
-        int totalAttack = getAttackPower();
-
-        // 무기 소지시 보너스 데미지
-        if (this.weapon != null) totalAttack += this.weapon.bonusAttack;
+        int totalAttack = getFinalAttackPower();
 
         if (Math.random() < 0.5 || getMp() < 20) {
-            System.out.println("\uD83C\uDFF9 " + getName() + "이(가) " + target.getName() + " 을(를) 향해 활을 쏩니다!");
+            System.out.println("\uD83C\uDFF9 " + getName() + " 이(가) " + target.getName() + " 을(를) 향해 활을 쏩니다!");
             target.takeDamage(totalAttack);
         } else {
             Skill[] skills = getSkill();
@@ -34,8 +31,8 @@ public class Archer extends Hero {
             setMp(getMp() - chosenSkill.getMPCost());
             int skillDamage = (int) (totalAttack * chosenSkill.getDamageMultiplier());
 
-            System.out.println("➶ [BULLSEYE] " + getName() + "이(가) 필살기 [" + chosenSkill.getName() + "] 사용합니다! (남은 MP: " + getMp() + ")");
-            System.out.println("   " + target.getName() + "에게 " + skillDamage + "의 관통 피해를 입혔습니다!");
+            System.out.println("➶ [BULLSEYE] " + getName() + " 이(가) 필살기 [" + chosenSkill.getName() + "] 사용합니다! (남은 MP: " + getMp() + ")");
+            System.out.println("   " + target.getName() + " 에게 " + skillDamage + " 의 관통 피해를 입혔습니다!");
             target.takeDamage(skillDamage);
         }
     }

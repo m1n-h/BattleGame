@@ -16,10 +16,7 @@ public class Warrior extends Hero {
     }
 
     public void attack(Monster target) {
-        int totalAttack = getAttackPower();
-
-        // 무기 소지시 보너스 데미지
-        if (this.weapon != null) totalAttack += this.weapon.bonusAttack;
+        int totalAttack = getFinalAttackPower();
 
         if (Math.random() < 0.5 || getMp() < 15) {
             System.out.println("⚔️ " + getName() + " (이)가 " + target.getName() + " 을(를) 공격합니다!");
@@ -33,7 +30,7 @@ public class Warrior extends Hero {
             setMp(getMp() - chosenSkill.getMPCost());
             int skillDamage = (int)(totalAttack * chosenSkill.getDamageMultiplier());
 
-            System.out.println("🔥 [CRITICAL] " + getName() + "이(가) 필살기 [" + chosenSkill.getName() + "] 사용합니다! (남은 MP: " + getMp() + ")");
+            System.out.println("🔥 [CRITICAL] " + getName() + " 이(가) 필살기 [" + chosenSkill.getName() + "] 사용합니다! (남은 MP: " + getMp() + ")");
             System.out.println("   " + target.getName() + " 에게 " + skillDamage + " 의 치명상을 입혔습니다!");
 
             target.takeDamage(skillDamage);
