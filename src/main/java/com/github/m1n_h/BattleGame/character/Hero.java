@@ -1,6 +1,9 @@
 package com.github.m1n_h.BattleGame.character;
 
+import com.github.m1n_h.BattleGame.exception.DuplicateWeaponException;
+import com.github.m1n_h.BattleGame.exception.ItemNotFoundException;
 import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
+import com.github.m1n_h.BattleGame.exception.UnequipWeaponException;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
@@ -33,10 +36,41 @@ public abstract class Hero extends Character {
     public int getLevel() { return this.level; }
 
     public void equipWeapon(Weapon weapon) {
+        if (this.weapon != null && this.getWeapon().equals(weapon))
+            throw new DuplicateWeaponException("해당 무기는 이미 장착 중 입니다.");
+
+        if (this.weapon != null) unequipWeapon();
+
+        removeItem((Usable) weapon, 1);
+
         this.weapon = weapon;
-        System.out.println("⚔️ " + getName() + "이(가) [" + weapon.name + "]을(를) 장착했습니다! (공격력 +" + weapon.bonusAttack + ")");
+        System.out.print("⚔️ [무기 장착]" + getName() + " 이(가) [" + weapon.name + "] 을(를) 장착했습니다!");
+        System.out.println(" (공격력 +" + weapon.bonusAttack + ")");
     }
+
+    public void unequipWeapon() {
+        if (this.getWeapon() == null) {
+            throw new UnequipWeaponException("현재 장착된 무기가 없습니다.");
+        } else {
+            addItem((Usable) this.weapon, 1);
+            System.out.println("⚔️ [무기 장착 해제]" + getName() + " 이(가) [" + weapon.name + "] 을(를) 장착 해제 했습니다!");
+            this.weapon = null;
+        }
+    }
+
+    public int getFinalAttackPower() {
+        int finalAttackPower = 0;
+        if (this.getWeapon() == null) {
+            finalAttackPower = getAttackPower();
+        }  else {
+            finalAttackPower = (getAttackPower() + weapon.bonusAttack);
+        }
+
+        return finalAttackPower;
+    }
+
     public Weapon getWeapon() { return this.weapon; }
+
 
     public abstract void attack(Monster target);
 
@@ -95,6 +129,25 @@ public abstract class Hero extends Character {
         inventory.put(item, currentCount + amount);
 
         System.out.println("\uD83D\uDCE6 [아이템 획득] " + item.getItemName() + " 을(를) " + amount + "개 획득 하셨습니다!");
+    }
+
+    public void removeItem(Usable item, int amount) {
+        String msg = "";
+        int currentCount = inventory.getOrDefault(item, 0);
+
+        if (currentCount < amount) {
+            throw new ItemNotFoundException(item.getItemName() + " 이(가) 부족 합니다. (현재 보유: " + currentCount + "개 / 필요 개수: " + amount + "개)");
+        }
+
+        if ((currentCount - amount) <= 0) {
+            inventory.remove(item);
+            msg = "\uD83D\uDCE6 [아이템 차감] " + item.getItemName() + " 을(를) 모두 사용하여 삭제 합니다.";
+        } else {
+            inventory.put(item, currentCount - amount);
+            msg = "\uD83D\uDCE6 [아이템 차감] " + item.getItemName() + " 을(를) " + amount + "개 차감 합니다.";
+        }
+
+        System.out.println(msg);
     }
 
 }
