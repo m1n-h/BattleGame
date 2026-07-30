@@ -4,6 +4,7 @@ import com.github.m1n_h.BattleGame.exception.DuplicateWeaponException;
 import com.github.m1n_h.BattleGame.exception.ItemNotFoundException;
 import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
 import com.github.m1n_h.BattleGame.exception.UnequipWeaponException;
+import com.github.m1n_h.BattleGame.item.Inventory;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
@@ -15,9 +16,9 @@ public abstract class Hero extends Character {
     private int level = 1;
     private Skill[] skill;
     private int gold = 100;
-    private Map<Usable, Integer> inventory = new HashMap<>();
     private int exp;
 
+    private Inventory inventory = new Inventory();
     Weapon weapon;
 
     public Hero(String name, int hp, int mp, int attackPower) {
@@ -77,7 +78,7 @@ public abstract class Hero extends Character {
     public int getGold() { return this.gold; }
     public void setGold(int gold) { this.gold = gold; }
 
-    public Map<Usable, Integer> getInventory() { return this.inventory; }
+    public Inventory getInventory() { return this.inventory; }
 
     public void payGold(int price) {
         if (this.gold < price) {
@@ -125,29 +126,11 @@ public abstract class Hero extends Character {
     }
 
     public void addItem(Usable item, int amount) {
-        int currentCount = inventory.getOrDefault(item, 0);
-        inventory.put(item, currentCount + amount);
-
-        System.out.println("\uD83D\uDCE6 [아이템 획득] " + item.getItemName() + " 을(를) " + amount + "개 획득 하셨습니다!");
+        this.inventory.addItem(item, amount);
     }
 
     public void removeItem(Usable item, int amount) {
-        String msg = "";
-        int currentCount = inventory.getOrDefault(item, 0);
-
-        if (currentCount < amount) {
-            throw new ItemNotFoundException(item.getItemName() + " 이(가) 부족 합니다. (현재 보유: " + currentCount + "개 / 필요 개수: " + amount + "개)");
-        }
-
-        if ((currentCount - amount) <= 0) {
-            inventory.remove(item);
-            msg = "\uD83D\uDCE6 [아이템 차감] " + item.getItemName() + " 을(를) 모두 사용하여 삭제 합니다.";
-        } else {
-            inventory.put(item, currentCount - amount);
-            msg = "\uD83D\uDCE6 [아이템 차감] " + item.getItemName() + " 을(를) " + amount + "개 차감 합니다.";
-        }
-
-        System.out.println(msg);
+        this.inventory.removeItem(item, amount);
     }
 
 }
