@@ -97,35 +97,24 @@ public class Shop {
             throw new NotEnoughGoldException("❌ [골드부족] 필요 골드: " + totalItemPrice + "G / 보유 골드: " + hero.getGold() + "G");
         }
 
-        Map<Usable, Integer> inventory = hero.getInventory();
+        Inventory inventory = hero.getInventory();
         Usable existingItem = null;
-        boolean isAdded = false;
 
-        for (Usable item : inventory.keySet()) {
+        for (Usable item : inventory.getItems().keySet()) {
             if (item.getItemName().equals(newItem.getItemName())) {
                 existingItem = item;
                 break;
             }
         }
 
-        if (existingItem != null) {
-            inventory.put(existingItem, inventory.get(existingItem) + 1);
-        } else {
-            inventory.put(newItem, 1);
-        }
 
-        int currentCount = inventory.getOrDefault(newItem, 0);
-        inventory.put(newItem, currentCount + 1);
+        Usable itemToAdd = (existingItem != null) ? existingItem : newItem;
+        inventory.addItem(itemToAdd, 1);
+
+        int currentCount = inventory.getItems().get(itemToAdd);
         System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매했습니다! (보유: " + (currentCount+1) + "개)");
-        isAdded = true;
-
-        /*if (!isAdded) {
-            System.out.println("❌ 인벤토리 공간 부족");
-            return;
-        }*/
 
         hero.setGold(hero.getGold() - itemPrice);
-        hero.addItem(newItem, count);
         System.out.println("💰 남은 골드: " + hero.getGold() + "G");
     }
 

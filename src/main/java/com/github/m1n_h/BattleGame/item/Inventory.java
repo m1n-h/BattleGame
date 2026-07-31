@@ -3,9 +3,8 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Usable;
 import com.github.m1n_h.BattleGame.exception.ItemNotFoundException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.Throwable;
+import java.util.*;
 
 public class Inventory {
     private final Map<Usable, Integer> items = new HashMap<>();
@@ -18,6 +17,8 @@ public class Inventory {
     }
 
     public void removeItem(Usable item, int amount) {
+        if (!items.containsKey(item)) return;
+
         String msg = "";
         int currentCount = items.getOrDefault(item, 0);
 
@@ -36,9 +37,32 @@ public class Inventory {
         System.out.println(msg);
     }
 
+    public Map<Usable, Integer> getItems() { return items; }
+    public boolean isEmpty() { return items.isEmpty(); }
+
+    public int getTotalItemCount() {
+        return items.values().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
+
     public List<Usable> getPotions() {
         return items.keySet().stream()
                 .filter(item -> item instanceof Potion)
                 .toList();
+    }
+
+    public Optional<Equippable> getStrongestWeapon() {
+        return items.keySet().stream()
+                .filter(item -> item instanceof Equippable)
+                .map(item -> (Equippable) item)
+                .max(Comparator.comparingInt(Equippable::getAttackBonus));
+    }
+
+    public Optional<Throwable> findThrowable() {
+        return items.keySet().stream()
+                .filter(item -> item instanceof Throwable)
+                .map(item -> (Throwable) item)
+                .findFirst();
     }
 }

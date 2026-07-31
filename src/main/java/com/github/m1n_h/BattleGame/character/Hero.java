@@ -4,6 +4,7 @@ import com.github.m1n_h.BattleGame.exception.DuplicateWeaponException;
 import com.github.m1n_h.BattleGame.exception.ItemNotFoundException;
 import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
 import com.github.m1n_h.BattleGame.exception.UnequipWeaponException;
+import com.github.m1n_h.BattleGame.item.Equippable;
 import com.github.m1n_h.BattleGame.item.Inventory;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
@@ -19,6 +20,7 @@ public abstract class Hero extends Character {
     private int exp;
 
     private Inventory inventory = new Inventory();
+    private Equippable equippedWeapon;
     Weapon weapon;
 
     public Hero(String name, int hp, int mp, int attackPower) {
@@ -131,6 +133,16 @@ public abstract class Hero extends Character {
 
     public void removeItem(Usable item, int amount) {
         this.inventory.removeItem(item, amount);
+    }
+
+    public void equipBestWeapon() {
+        this.inventory.getStrongestWeapon().ifPresentOrElse(
+                bestWeapon -> {
+                    System.out.println("공격력이 가장 높은 무기를 찾아 장착합니다!");
+                    this.equipWeapon((Weapon) bestWeapon);
+                },
+                () -> System.out.println("장착 가능한 무기가 없습니다.")
+        );
     }
 
 }
