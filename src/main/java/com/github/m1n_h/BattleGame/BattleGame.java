@@ -134,7 +134,7 @@ public class BattleGame {
                     } else if (choice == 2) {
                         int beforeEmptyCount = inventory.getTotalItemCount();
 
-                        useItemBattle(activeHero, inventory, kingSlime, sc);
+                        useItemBattle(activeHero, inventory, kingSlime, sc, hero);
 
                         int afterEmptyCount = inventory.getTotalItemCount();
 
@@ -298,7 +298,7 @@ public class BattleGame {
         return lowestMpHero;
     }
 
-    public static void useItemBattle(Hero user, Inventory inventory, Monster target, Scanner sc) {
+    public static void useItemBattle(Hero user, Inventory inventory, Monster target, Scanner sc, List<Hero> party) {
         System.out.println("\n\uD83C\uDF92 [ 인벤토리 목록 ]");
 
         if (inventory.isEmpty()) {
@@ -329,6 +329,8 @@ public class BattleGame {
             ((FireBomb) selectedItem).throwAt(target);
         } else if (selectedItem instanceof Equippable) {
             ((Equippable) selectedItem).equip(user);
+        } else if (selectedItem instanceof Elixir elixir) {
+            elixir.useAll(user, party);
         }
 
         inventory.removeItem(selectedItem, 1);

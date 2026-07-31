@@ -44,5 +44,8 @@ public class RustSword implements Usable, Equippable{
     public int hashCode() { return name.hashCode(); }
 
     @Override
+    public String toString(){ return getItemName(); }
+
+    @Override
     public int getAttackBonus() { return this.attackBonus; }
 }

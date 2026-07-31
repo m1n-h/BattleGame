@@ -36,4 +36,7 @@ public class FireBomb implements Usable, Throwable {
 
     @Override
     public int hashCode() { return name.hashCode(); }
+
+    @Override
+    public String toString() { return getItemName(); }
 }

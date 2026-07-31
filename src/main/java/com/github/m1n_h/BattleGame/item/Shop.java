@@ -20,7 +20,8 @@ public class Shop {
                 new ShopItem("전설의 숫돌 (공격력 +15)", 70, 15),
                 new ShopItem("대마법사의 숨결 (공격력 +30)", 120, 30),
                 new ShopItem("화염병", 50, 0),
-                new ShopItem("녹슨 검", 10, 10)
+                new ShopItem("녹슨 검", 10, 10),
+                new ShopItem("파티 엘릭서", 100, 0)
         };
 
         while (true) {
@@ -61,6 +62,15 @@ public class Shop {
                         System.out.print(selectedItem.getItemName() + " 장착 여부 선택 (1. 장착 / 2. 미장착): ");
                         int swordEquipChoice = sc.nextInt();
                         if (swordEquipChoice == 1) newSword.equip(buyerHero);
+
+                    } else if (selectedItem.getItemName().contains("엘릭서")) {
+                        System.out.print("구매 개수 입력: ");
+                        int buyCount = sc.nextInt();
+                        Elixir newElixir = new Elixir();
+
+                        buyItem(buyerHero, newElixir, selectedItem.getItemPrice(), buyCount);
+                        System.out.println("✨ [구매 완료] 인벤토리에 " + selectedItem.getItemName() + " 추가 완료!");
+
                     } else {
 
                         if (buyerHero.getGold() < selectedItem.getItemPrice()) {
@@ -109,12 +119,11 @@ public class Shop {
 
 
         Usable itemToAdd = (existingItem != null) ? existingItem : newItem;
-        inventory.addItem(itemToAdd, 1);
+        inventory.addItem(itemToAdd, count);
+        hero.setGold(hero.getGold() - totalItemPrice);
 
         int currentCount = inventory.getItems().get(itemToAdd);
-        System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매했습니다! (보유: " + (currentCount+1) + "개)");
-
-        hero.setGold(hero.getGold() - itemPrice);
+        System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매했습니다! (보유: " + currentCount + "개)");
         System.out.println("💰 남은 골드: " + hero.getGold() + "G");
     }
 
