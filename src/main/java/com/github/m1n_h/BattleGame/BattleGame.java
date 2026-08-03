@@ -134,7 +134,7 @@ public class BattleGame {
                     } else if (choice == 2) {
                         int beforeEmptyCount = inventory.getTotalItemCount();
 
-                        useItemBattle(activeHero, inventory, kingSlime, sc, hero);
+                        useItemBattle(activeHero, hero.get(0).getInventory(), kingSlime, sc, hero);
 
                         int afterEmptyCount = inventory.getTotalItemCount();
 
@@ -301,6 +301,7 @@ public class BattleGame {
     public static void useItemBattle(Hero user, Inventory inventory, Monster target, Scanner sc, List<Hero> party) {
         System.out.println("\n\uD83C\uDF92 [ 인벤토리 목록 ]");
 
+        System.out.println(inventory.getItems());
         if (inventory.isEmpty()) {
             System.out.println("❌ 인벤토리가 비어 있습니다.");
             return;
