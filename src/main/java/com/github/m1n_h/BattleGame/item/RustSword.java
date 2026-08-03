@@ -3,10 +3,12 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
-public class RustSword implements Usable, Equippable{
-    private String name = "녹슨 검";
-    private int attackBonus = 10;
+public class RustSword extends Weapon implements Usable, Equippable {
     private boolean isEquipped = false;
+
+    public RustSword() {
+        super("녹슨 검", 10);
+    }
 
     @Override
     public void use(Hero target) {
@@ -17,7 +19,7 @@ public class RustSword implements Usable, Equippable{
     public void equip(Hero target) {
         if (!isEquipped) {
             isEquipped = true;
-            System.out.println("⚔️ " + target.getName() + " 이(가) " + name + " 을(를) 장착했습니다! (공격력: +" + attackBonus + ")");
+            System.out.println("⚔️ " + target.getName() + " 이(가) " + name + " 을(를) 장착했습니다! (공격력: +" + bonusAttack + ")");
         }
     }
 
@@ -47,5 +49,5 @@ public class RustSword implements Usable, Equippable{
     public String toString(){ return getItemName(); }
 
     @Override
-    public int getAttackBonus() { return this.attackBonus; }
+    public int getAttackBonus() { return bonusAttack; }
 }

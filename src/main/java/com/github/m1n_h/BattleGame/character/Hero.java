@@ -20,7 +20,7 @@ public abstract class Hero extends Character {
     private int exp;
 
     private Inventory inventory = new Inventory();
-    private Equippable equippedWeapon;
+    private Weapon equippedWeapon;
     Weapon weapon;
 
     public Hero(String name, int hp, int mp, int attackPower) {
@@ -47,8 +47,8 @@ public abstract class Hero extends Character {
         removeItem((Usable) weapon, 1);
 
         this.weapon = weapon;
-        System.out.print("⚔️ [무기 장착]" + getName() + " 이(가) [" + weapon.name + "] 을(를) 장착했습니다!");
-        System.out.println(" (공격력 +" + weapon.bonusAttack + ")");
+        System.out.print("⚔️ [무기 장착] " + getName() + " 이(가) [" + weapon.name + "] 을(를) 장착했습니다!");
+        System.out.println(" (공격력 +" + weapon.bonusAttack + " / 최종 공격력: " + getFinalAttackPower() + ")");
     }
 
     public void unequipWeapon() {
@@ -56,20 +56,15 @@ public abstract class Hero extends Character {
             throw new UnequipWeaponException("현재 장착된 무기가 없습니다.");
         } else {
             addItem((Usable) this.weapon, 1);
-            System.out.println("⚔️ [무기 장착 해제]" + getName() + " 이(가) [" + weapon.name + "] 을(를) 장착 해제 했습니다!");
+            System.out.print("⚔️ [무기 장착 해제] " + getName() + " 이(가) [" + weapon.name + "] 을(를) 장착 해제 했습니다!");
             this.weapon = null;
+            System.out.println(" (공격력: " + getFinalAttackPower() + ")");
         }
     }
 
     public int getFinalAttackPower() {
-        int finalAttackPower = 0;
-        if (this.getWeapon() == null) {
-            finalAttackPower = getAttackPower();
-        }  else {
-            finalAttackPower = (getAttackPower() + weapon.bonusAttack);
-        }
-
-        return finalAttackPower;
+        int finalAttackPower = (this.getWeapon() != null) ? this.weapon.getAttackBonus() : 0;
+        return getAttackPower() + finalAttackPower;
     }
 
     public Weapon getWeapon() { return this.weapon; }

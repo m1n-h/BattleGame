@@ -3,7 +3,7 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
-public class Weapon implements Usable {
+public class Weapon implements Usable, Equippable {
     public String name;
     public int bonusAttack;
     private int damage;
@@ -18,6 +18,15 @@ public class Weapon implements Usable {
 
     @Override
     public String getItemName() { return getName(); }
+
+    @Override
+    public void equip(Hero hero) { hero.equipWeapon(this); }
+
+    @Override
+    public void unequip(Hero hero) { hero.unequipWeapon(); }
+
+    @Override
+    public int getAttackBonus() { return this.bonusAttack; }
 
     public String getName() { return this.name; }
 

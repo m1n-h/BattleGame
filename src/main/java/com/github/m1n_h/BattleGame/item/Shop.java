@@ -55,13 +55,14 @@ public class Shop {
 
                     } else if (selectedItem.getItemName().contains("검")) {
                         RustSword newSword = new RustSword();
+                        Weapon newWeapon = new Weapon(newSword.getItemName(), newSword.getAttackBonus());
 
-                        buyItem(buyerHero, newSword, selectedItem.getItemPrice(), 1);
+                        buyItem(buyerHero, newWeapon, selectedItem.getItemPrice(), 1);
 
                         System.out.println("✨ [구매 완료] 인벤토리에 " + selectedItem.getItemName() + " 추가 완료!");
                         System.out.print(selectedItem.getItemName() + " 장착 여부 선택 (1. 장착 / 2. 미장착): ");
                         int swordEquipChoice = sc.nextInt();
-                        if (swordEquipChoice == 1) newSword.equip(buyerHero);
+                        if (swordEquipChoice == 1) newWeapon.equip(buyerHero);
 
                     } else if (selectedItem.getItemName().contains("엘릭서")) {
                         System.out.print("구매 개수 입력: ");
