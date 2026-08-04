@@ -1,6 +1,7 @@
 package com.github.m1n_h.BattleGame;
 
 import com.github.m1n_h.BattleGame.character.Usable;
+import com.github.m1n_h.BattleGame.exception.UnequipWeaponException;
 import com.github.m1n_h.BattleGame.item.*;
 
 import com.github.m1n_h.BattleGame.character.*;
@@ -301,7 +302,6 @@ public class BattleGame {
     public static void useItemBattle(Hero user, Inventory inventory, Monster target, Scanner sc, List<Hero> party) {
         System.out.println("\n\uD83C\uDF92 [ 인벤토리 목록 ]");
 
-        System.out.println(inventory.getItems());
         if (inventory.isEmpty()) {
             System.out.println("❌ 인벤토리가 비어 있습니다.");
             return;
@@ -314,7 +314,7 @@ public class BattleGame {
             System.out.println((i + 1) + ". " + item.getItemName() + "(보유: " +  count + "개)");
         }
 
-        System.out.println("사용할 아이템 번호를 선택하세요 (0 : 취소) : ");
+        System.out.print("사용할 아이템 번호를 선택하세요 (0 : 취소) : ");
         int itemChoice = sc.nextInt() - 1;
 
         if (itemChoice < 0 || itemChoice >= itemList.size()) {
@@ -328,8 +328,14 @@ public class BattleGame {
             selectedItem.use(user);
         } else if (selectedItem instanceof FireBomb) {
             ((FireBomb) selectedItem).throwAt(target);
-        } else if (selectedItem instanceof Equippable) {
-            ((Equippable) selectedItem).equip(user);
+        } else if (selectedItem instanceof Equippable equippableItem) {
+            try {
+                equippableItem.equip(user);
+            } catch (DuplicateFormatFlagsException e) {
+                System.out.println(e.getMessage());
+            } catch (UnequipWeaponException e) {
+                System.out.println(e.getMessage());
+            }
         } else if (selectedItem instanceof Elixir elixir) {
             elixir.useAll(user, party);
         }

@@ -3,9 +3,11 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
+import com.github.m1n_h.BattleGame.exception.UnequipWeaponException;
 import com.github.m1n_h.BattleGame.item.Equippable;
 
 import java.util.ArrayList;
+import java.util.DuplicateFormatFlagsException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -62,7 +64,17 @@ public class Shop {
                         System.out.println("✨ [구매 완료] 인벤토리에 " + selectedItem.getItemName() + " 추가 완료!");
                         System.out.print(selectedItem.getItemName() + " 장착 여부 선택 (1. 장착 / 2. 미장착): ");
                         int swordEquipChoice = sc.nextInt();
-                        if (swordEquipChoice == 1) newWeapon.equip(buyerHero);
+                        if (swordEquipChoice == 1) {
+                            try {
+                                if (selectedItem instanceof Equippable equippableItem) {
+                                    equippableItem.equip(buyerHero);
+                                }
+                            } catch (DuplicateFormatFlagsException e) {
+                                System.out.println(e.getMessage());
+                            } catch (UnequipWeaponException e) {
+                                System.out.println(e.getMessage());
+                            }
+                        }
 
                     } else if (selectedItem.getItemName().contains("엘릭서")) {
                         System.out.print("구매 개수 입력: ");
