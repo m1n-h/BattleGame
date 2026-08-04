@@ -4,11 +4,14 @@ import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
 public class Weapon implements Usable, Equippable {
-    public String name;
+    private static int nextWeaponId = 1;
+    private final int weaponId;
+    private String name;
     public int bonusAttack;
     private int damage;
 
     public Weapon(String name, int bonusAttack) {
+        this.weaponId = nextWeaponId++;
         this.name = name;
         this.bonusAttack = bonusAttack;
     }
@@ -28,6 +31,7 @@ public class Weapon implements Usable, Equippable {
     @Override
     public int getAttackBonus() { return this.bonusAttack; }
 
+    public int getWeaponId() { return weaponId; }
     public String getName() { return this.name; }
 
     public int getDamage() { return this.damage; }

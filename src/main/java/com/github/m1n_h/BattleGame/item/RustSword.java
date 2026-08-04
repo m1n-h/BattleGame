@@ -12,14 +12,14 @@ public class RustSword extends Weapon implements Usable, Equippable {
 
     @Override
     public void use(Hero target) {
-        System.out.println("🎒 " + name + " 은(는) 장비 아이템입니다. 장착하여 사용하세요!");
+        System.out.println("🎒 " + getItemName() + " 은(는) 장비 아이템입니다. 장착하여 사용하세요!");
     }
 
     @Override
     public void equip(Hero target) {
         if (!isEquipped) {
             isEquipped = true;
-            System.out.println("⚔️ " + target.getName() + " 이(가) " + name + " 을(를) 장착했습니다! (공격력: +" + bonusAttack + ")");
+            System.out.println("⚔️ " + target.getName() + " 이(가) " + getItemName() + " 을(를) 장착했습니다! (공격력: +" + bonusAttack + ")");
         }
     }
 
@@ -27,23 +27,23 @@ public class RustSword extends Weapon implements Usable, Equippable {
     public void unequip(Hero target) {
         if (isEquipped) {
             isEquipped = false;
-            System.out.println("🛡️ " + target.getName() + " 이(가) " + name + " 을(를) 장착 해제했습니다.");
+            System.out.println("🛡️ " + target.getName() + " 이(가) " + getItemName() + " 을(를) 장착 해제했습니다.");
         }
     }
 
     @Override
-    public String getItemName() { return this.name; }
+    public String getItemName() { return this.getItemName(); }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RustSword that = (RustSword) o;
-        return name.equals(that.name);
+        return getItemName().equals(that.getItemName());
     }
 
     @Override
-    public int hashCode() { return name.hashCode(); }
+    public int hashCode() { return getItemName().hashCode(); }
 
     @Override
     public String toString(){ return getItemName(); }
