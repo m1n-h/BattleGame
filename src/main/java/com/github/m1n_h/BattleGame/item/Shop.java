@@ -136,6 +136,8 @@ public class Shop {
         int currentCount = inventory.getItems().get(itemToAdd);
         System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매했습니다! (보유: " + currentCount + "개)");
         System.out.println("💰 남은 골드: " + hero.getGold() + "G");
+
+        hero.addTitle("비밀 상점 단골");
     }
 
     public static void addShopItem(int key, ShopItem item) {
@@ -145,7 +147,5 @@ public class Shop {
             itemList.put(key, item);
         }
     }
-
-    public static Map<Integer, ShopItem> getShopItems() { return itemList; }
 
 }

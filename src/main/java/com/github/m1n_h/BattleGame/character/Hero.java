@@ -10,7 +10,9 @@ import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Hero extends Character {
     private int mp;
@@ -22,6 +24,8 @@ public abstract class Hero extends Character {
     private Inventory inventory = new Inventory();
     private Weapon equippedWeapon;
     Weapon weapon;
+
+    private Set<String> titles = new HashSet<>();
 
     public Hero(String name, int hp, int mp, int attackPower) {
         setName(name);
@@ -138,6 +142,14 @@ public abstract class Hero extends Character {
                 },
                 () -> System.out.println("장착 가능한 무기가 없습니다.")
         );
+    }
+
+    public void addTitle(String title) {
+        if (titles.add(title)) {
+            System.out.println("\uD83C\uDF89 [칭호 획득] " + getName() + " 이(가) '" + title + "' 칭호를 획득 했습니다!");
+        } else {
+            System.out.println("ℹ\uFE0F 이미 보유한 칭호 입니다.");
+        }
     }
 
 }
