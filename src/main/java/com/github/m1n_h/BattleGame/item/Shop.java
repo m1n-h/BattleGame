@@ -6,45 +6,43 @@ import com.github.m1n_h.BattleGame.exception.NotEnoughGoldException;
 import com.github.m1n_h.BattleGame.exception.UnequipWeaponException;
 import com.github.m1n_h.BattleGame.item.Equippable;
 
-import java.util.ArrayList;
-import java.util.DuplicateFormatFlagsException;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Shop {
+
+    private static final Map<Integer, ShopItem> itemList = new HashMap<>();
 
     public static void openShop(ArrayList<Hero> hero) {
         Scanner sc = new Scanner(System.in);
         Hero buyerHero = hero.get(0);
 
-        ShopItem[] items = {
-                new ShopItem("기본 숫돌 (공격력 +5)", 30, 5),
-                new ShopItem("전설의 숫돌 (공격력 +15)", 70, 15),
-                new ShopItem("대마법사의 숨결 (공격력 +30)", 120, 30),
-                new ShopItem("화염병", 50, 0),
-                new ShopItem("녹슨 검", 10, 10),
-                new ShopItem("파티 엘릭서", 100, 0)
-        };
+        itemList.put(1, new ShopItem("기본 숫돌 (공격력 +5)", 30, 5));
+        itemList.put(2, new ShopItem("전설의 숫돌 (공격력 +15)", 70, 15));
+        itemList.put(3, new ShopItem("대마법사의 숨결 (공격력 +30)", 120, 30));
+        itemList.put(4, new ShopItem("화염병", 50, 0));
+        itemList.put(5, new ShopItem("녹슨 검", 10, 10));
+        itemList.put(6, new ShopItem("파티 엘릭서", 100, 0));
 
         while (true) {
             System.out.println("\n\uD83D\uDED2 [비밀 상점] 상품 목록");
             System.out.println("💰 현재 보유 골드: " + buyerHero.getGold() + "G");
 
-            for (int i = 0; i < items.length; i++) {
-                System.out.println((i + 1) + ". " + items[i].getItemName() + " (" + items[i].getItemPrice() + "G)");
+            System.out.println("0. 상점 나가기 (보스전 진입)");
+            for (Map.Entry<Integer, ShopItem> entry : itemList.entrySet()) {
+                ShopItem items = entry.getValue();
+                System.out.println(entry.getKey() + ". " + items.getItemName() + " (" + items.getItemPrice() + "G)");
             }
-            System.out.println((items.length + 1) + ". 상점 나가기 (보스전 진입)");
 
             System.out.print("구매할 상품 번호 입력: ");
             int choice = sc.nextInt();
 
-            if (choice == items.length + 1) {
+            if (choice == 0) {
                 System.out.println("🚪 상점을 나갑니다. 보스전으로 이동합니다!");
                 break;
             }
 
-            if (choice > 0 && choice <= items.length) {
-                ShopItem selectedItem = items[choice - 1];
+            if (itemList.containsKey(choice)) {
+                ShopItem selectedItem = itemList.get(choice);
 
                 try {
                     if (selectedItem.getItemName().contains("화염병")) {
@@ -108,7 +106,7 @@ public class Shop {
                 }
 
             } else {
-                System.out.println("⚠️ 잘못된 입력입니다.");
+                System.out.println("⚠️ 해당 상품 번호가 존재하지 않습니다. 다시 입력해 주세요.");
             }
         }
     }
@@ -139,5 +137,15 @@ public class Shop {
         System.out.println("🛒 상점에서 " + newItem.getItemName() + " 을(를) 구매했습니다! (보유: " + currentCount + "개)");
         System.out.println("💰 남은 골드: " + hero.getGold() + "G");
     }
+
+    public static void addShopItem(int key, ShopItem item) {
+        if (itemList.containsKey(key)) {
+            System.out.println("이미 " + key + "번 슬롯에 상품이 존재합니다.");
+        } else {
+            itemList.put(key, item);
+        }
+    }
+
+    public static Map<Integer, ShopItem> getShopItems() { return itemList; }
 
 }
