@@ -3,6 +3,8 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
+import java.util.Objects;
+
 public class RustSword extends Weapon implements Usable, Equippable {
     private boolean isEquipped = false;
 
@@ -38,12 +40,12 @@ public class RustSword extends Weapon implements Usable, Equippable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RustSword that = (RustSword) o;
-        return getItemName().equals(that.getItemName());
+        Usable usable = (Usable) o;
+        return Objects.equals(getItemName(), usable.getItemName());
     }
 
     @Override
-    public int hashCode() { return getItemName().hashCode(); }
+    public int hashCode() { return Objects.hash(getItemName()); }
 
     @Override
     public String toString(){ return getItemName(); }

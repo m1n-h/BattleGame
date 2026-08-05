@@ -37,8 +37,8 @@ public class Elixir implements Usable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Elixir that = (Elixir) o;
-        return Objects.equals(getItemName(), that.getItemName());
+        Usable usable = (Usable) o;
+        return Objects.equals(getItemName(), usable.getItemName());
     }
 
     @Override

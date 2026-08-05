@@ -17,7 +17,20 @@ public class Inventory {
     }
 
     public void removeItem(Usable item, int amount) {
-        if (!items.containsKey(item)) return;
+//        if (!items.containsKey(item)) return;
+
+        Usable targetKey = null;
+        for (Usable key : items.keySet()) {
+            if (key.getItemName().equals(item.getItemName())) {
+                targetKey = key;
+                break;
+            }
+        }
+
+        if (targetKey == null) {
+            System.out.println("❌ 인벤토리에 해당 아이템이 존재하지 않습니다.");
+            return;
+        }
 
         String msg = "";
         int currentCount = items.getOrDefault(item, 0);

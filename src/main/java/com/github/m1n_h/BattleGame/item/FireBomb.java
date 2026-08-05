@@ -4,6 +4,8 @@ import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 import com.github.m1n_h.BattleGame.monster.Monster;
 
+import java.util.Objects;
+
 public class FireBomb implements Usable, Throwable {
     private String name = "화염병";
     private int damage = 150;
@@ -30,12 +32,12 @@ public class FireBomb implements Usable, Throwable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FireBomb that = (FireBomb) o;
-        return name.equals(that.name);
+        Usable usable = (Usable) o;
+        return Objects.equals(getItemName(), usable.getItemName());
     }
 
     @Override
-    public int hashCode() { return name.hashCode(); }
+    public int hashCode() { return Objects.hash(getItemName()); }
 
     @Override
     public String toString() { return getItemName(); }

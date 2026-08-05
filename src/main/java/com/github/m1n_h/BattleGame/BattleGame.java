@@ -29,6 +29,10 @@ public class BattleGame {
             monster.add(new Goblin(i));
         }
 
+        for (Hero h : hero) {
+            h.addTitle("초보 모험가");
+        }
+
 
         System.out.println("GAME START! \uD83C\uDFB5\n");
         System.out.println("⚠\uFE0F 몬스터 연합군 " + monster.size() + "마리 출몰!!\n");
@@ -133,17 +137,17 @@ public class BattleGame {
                         isTurnUsed = true;
 
                     } else if (choice == 2) {
-                        int beforeEmptyCount = inventory.getTotalItemCount();
+                        Inventory activeInventory = hero.get(0).getInventory();
 
-                        useItemBattle(activeHero, hero.get(0).getInventory(), kingSlime, sc, hero);
-
-                        int afterEmptyCount = inventory.getTotalItemCount();
+                        int beforeEmptyCount = activeInventory.getTotalItemCount();
+                        useItemBattle(activeHero, activeInventory, kingSlime, sc, hero);
+                        int afterEmptyCount = activeInventory.getTotalItemCount();
 
                         if (afterEmptyCount < beforeEmptyCount) {
                             System.out.println("✨ 아이템을 성공적으로 사용하여 턴이 소모됩니다.");
                             isTurnUsed = true;
                         } else {
-                            System.out.println("↩️ 아이템을 사용하지 않았습니다. 다시 행동을 선택해 주세요.");
+                            System.out.println("↩\uFE0F 아이템을 사용하지 않았습니다. 다시 행동을 선택해 주세요.");
                         }
                     }
                 }
