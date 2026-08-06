@@ -1,9 +1,10 @@
 package com.github.m1n_h.BattleGame.monster;
 import com.github.m1n_h.BattleGame.character.Hero;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class KingSlime extends Monster {
+public class KingSlime extends Monster implements Serializable {
     private int[] weakPoints;
     private int destroyedWeakPoints = 0;
 

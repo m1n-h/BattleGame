@@ -2,7 +2,9 @@ package com.github.m1n_h.BattleGame.monster;
 
 import com.github.m1n_h.BattleGame.character.Hero;
 
-public class MeleeMonster extends Monster {
+import java.io.Serializable;
+
+public class MeleeMonster extends Monster implements Serializable {
 
     public MeleeMonster(String name, int hp, int attackPower, int exp, String[] skills, int gold) {
         super(name, hp, attackPower, exp, gold);

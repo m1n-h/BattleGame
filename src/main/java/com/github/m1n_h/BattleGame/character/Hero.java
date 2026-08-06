@@ -9,12 +9,13 @@ import com.github.m1n_h.BattleGame.item.Inventory;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Hero extends Character {
+public abstract class Hero extends Character implements Serializable {
     private int mp;
     private int level = 1;
     private Skill[] skill;

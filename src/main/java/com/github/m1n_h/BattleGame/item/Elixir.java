@@ -3,10 +3,11 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class Elixir implements Usable {
+public class Elixir implements Usable, Serializable {
     private final String name = "파티 엘릭서";
 
     @Override

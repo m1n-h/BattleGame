@@ -3,7 +3,9 @@ package com.github.m1n_h.BattleGame.character;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
-public class Mage extends Hero {
+import java.io.Serializable;
+
+public class Mage extends Hero implements Serializable {
 
     public Mage() {
         super("아리엘", 150, 250, 15);

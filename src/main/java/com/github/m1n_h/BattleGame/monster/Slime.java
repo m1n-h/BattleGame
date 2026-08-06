@@ -2,9 +2,10 @@ package com.github.m1n_h.BattleGame.monster;
 
 import com.github.m1n_h.BattleGame.character.Hero;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Slime extends Monster {
+public class Slime extends Monster implements Serializable {
     int id;
 
     public Slime(int id) {

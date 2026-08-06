@@ -3,7 +3,9 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
-public class Weapon implements Usable, Equippable {
+import java.io.Serializable;
+
+public class Weapon implements Usable, Equippable, Serializable {
     private static int nextWeaponId = 1;
     private final int weaponId;
     private String name;

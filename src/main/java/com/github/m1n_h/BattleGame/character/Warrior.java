@@ -3,7 +3,9 @@ package com.github.m1n_h.BattleGame.character;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
-public class Warrior extends Hero {
+import java.io.Serializable;
+
+public class Warrior extends Hero implements Serializable {
 
     public Warrior() {
         super("레오", 250, 100, 30);

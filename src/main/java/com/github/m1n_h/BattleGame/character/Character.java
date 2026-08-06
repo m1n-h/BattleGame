@@ -1,6 +1,8 @@
 package com.github.m1n_h.BattleGame.character;
 
-public class Character {
+import java.io.Serializable;
+
+public class Character implements Serializable {
     private String name;
     private int hp;
     private int attackPower;

@@ -3,9 +3,10 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class RustSword extends Weapon implements Usable, Equippable {
+public class RustSword extends Weapon implements Usable, Equippable, Serializable {
     private boolean isEquipped = false;
 
     public RustSword() {

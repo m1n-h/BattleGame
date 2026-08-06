@@ -2,9 +2,10 @@ package com.github.m1n_h.BattleGame.monster;
 
 import com.github.m1n_h.BattleGame.character.Hero;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Goblin extends Monster {
+public class Goblin extends Monster implements Serializable {
     int id;
 
     public Goblin(int id) {

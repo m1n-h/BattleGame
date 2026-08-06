@@ -3,7 +3,9 @@ package com.github.m1n_h.BattleGame.character;
 import com.github.m1n_h.BattleGame.monster.Monster;
 import com.github.m1n_h.BattleGame.item.Weapon;
 
-public class Archer extends Hero {
+import java.io.Serializable;
+
+public class Archer extends Hero implements Serializable {
 
     public Archer() {
         super("앨리", 200, 170, 20);

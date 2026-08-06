@@ -4,9 +4,10 @@ import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 import com.github.m1n_h.BattleGame.monster.Monster;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class FireBomb implements Usable, Throwable {
+public class FireBomb implements Usable, Throwable, Serializable {
     private String name = "화염병";
     private int damage = 150;
 

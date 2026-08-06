@@ -3,7 +3,9 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Hero;
 import com.github.m1n_h.BattleGame.character.Usable;
 
-public class Potion implements Usable {
+import java.io.Serializable;
+
+public class Potion implements Usable, Serializable {
     private String name;
     private int HPHealAmount;
     private int MPHealAmount;

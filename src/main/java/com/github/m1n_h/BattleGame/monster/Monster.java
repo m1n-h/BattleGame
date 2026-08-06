@@ -3,7 +3,9 @@ package com.github.m1n_h.BattleGame.monster;
 import com.github.m1n_h.BattleGame.character.Character;
 import com.github.m1n_h.BattleGame.character.Hero;
 
-public abstract class Monster extends Character {
+import java.io.Serializable;
+
+public abstract class Monster extends Character implements Serializable {
     private int exp;
     private int dropItem;
     private String[] attackName;

@@ -3,11 +3,12 @@ package com.github.m1n_h.BattleGame.item;
 import com.github.m1n_h.BattleGame.character.Usable;
 import com.github.m1n_h.BattleGame.exception.ItemNotFoundException;
 
+import java.io.Serializable;
 import java.lang.Throwable;
 import java.util.*;
 
-public class Inventory {
-    private final Map<Usable, Integer> items = new HashMap<>();
+public class Inventory implements Serializable {
+    private Map<Usable, Integer> items = new HashMap<>();
 
     public void addItem(Usable item, int amount) {
         int currentCount = items.getOrDefault(item, 0);
@@ -50,7 +51,13 @@ public class Inventory {
         System.out.println(msg);
     }
 
-    public Map<Usable, Integer> getItems() { return items; }
+    public Map<Usable, Integer> getItems() {
+        if (this.items == null) {
+            this.items = new HashMap<>();
+        }
+        return this.items;
+    }
+
     public boolean isEmpty() { return items.isEmpty(); }
 
     public int getTotalItemCount() {

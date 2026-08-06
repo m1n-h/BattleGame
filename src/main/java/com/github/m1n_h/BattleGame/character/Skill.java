@@ -1,6 +1,8 @@
 package com.github.m1n_h.BattleGame.character;
 
-public class Skill {
+import java.io.Serializable;
+
+public class Skill implements Serializable {
     private String name;
     private double damageMultiplier;
     private int mpCost;
